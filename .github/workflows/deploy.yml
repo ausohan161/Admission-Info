@@ -1,0 +1,40 @@
+name: Deploy to Hostinger
+
+# চলবে: main ব্রাঞ্চে push হলেই স্বয়ংক্রিয়ভাবে, অথবা GitHub-এর Actions ট্যাব থেকে
+# ম্যানুয়ালি "Run workflow" চেপেও চালানো যাবে।
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: রিপো checkout
+        uses: actions/checkout@v4
+
+      - name: Node.js সেটআপ
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: ডিপেন্ডেন্সি ইনস্টল
+        run: npm ci
+
+      - name: স্ট্যাটিক সাইট বিল্ড (তৈরি হবে out/ ফোল্ডার)
+        run: npm run build
+
+      # নিচের ৪টি secret GitHub repo → Settings → Secrets and variables →
+      # Actions -এ যোগ করতে হবে (মান আসবে Hostinger hPanel → Files → FTP
+      # Accounts থেকে)। বিস্তারিত ধাপ চ্যাটে দেওয়া হয়েছে।
+      - name: Hostinger-এ FTP দিয়ে আপলোড
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          server-dir: ${{ secrets.FTP_SERVER_DIR }}
+          local-dir: ./out/
+          protocol: ftps
