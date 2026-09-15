@@ -1,0 +1,880 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>অ্যাডমিশন ক্যালেন্ডার | বিশ্ববিদ্যালয় ভর্তি পরীক্ষার তারিখ ও তথ্য</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hind+Siliguri:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          navy: {
+            50: "#f0f4fa", 100: "#dbe6f3", 200: "#b9cfe8", 300: "#8fb0d8",
+            400: "#5f8bc3", 500: "#3e6bab", 600: "#2d5290", 700: "#254374",
+            800: "#1f3660", 900: "#152443", 950: "#0d162c",
+          },
+        },
+        fontFamily: { bangla: ["Hind Siliguri", "Noto Sans Bengali", "system-ui", "sans-serif"] },
+        boxShadow: {
+          soft: "0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 3px 0 rgb(15 23 42 / 0.06)",
+          card: "0 1px 3px 0 rgb(15 23 42 / 0.06), 0 4px 12px -4px rgb(15 23 42 / 0.08)",
+        },
+      },
+    },
+  };
+</script>
+<style>
+  html, body { font-family: "Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif; background-color: #f7f9fc; color: #14213d; margin: 0; }
+  .sticky-thead th { position: sticky; top: 0; z-index: 10; }
+  ::-webkit-scrollbar { height: 8px; width: 8px; }
+  ::-webkit-scrollbar-thumb { background-color: #cbd5e1; border-radius: 9999px; }
+  ::-webkit-scrollbar-track { background-color: transparent; }
+  @keyframes marquee-scroll { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  .marquee-track { animation: marquee-scroll linear infinite; }
+  .marquee-track:hover { animation-play-state: paused; }
+  #root:empty::before {
+    content: "লোড হচ্ছে...";
+    display: block; text-align: center; padding: 80px 20px; color: #94a3b8; font-size: 14px;
+  }
+  .preview-banner {
+    background: linear-gradient(90deg, #4f46e5, #7c3aed, #c026d3);
+    color: white; text-align: center; font-size: 12px; padding: 6px 12px;
+  }
+</style>
+</head>
+<body>
+<div class="preview-banner">এটি একটি অফলাইন প্রিভিউ ফাইল (স্ট্যান্ডঅ্যালোন .html) — শুধু দেখার জন্য, এটি লাইভ ওয়েবসাইট নয়।</div>
+<div id="root"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.3.1/umd/react.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.3.1/umd/react-dom.production.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.24.7/babel.min.js"></script>
+
+<script type="text/babel" data-presets="react">
+const { useState, useMemo, useEffect } = React;
+
+/* =========================================================================
+   DATA
+   ========================================================================= */
+const categories = [
+  { id: "medical", slug: "medical", nameBn: "মেডিকেল অ্যান্ড ডেন্টাল কলেজ", shortNameBn: "মেডিকেল" },
+  { id: "engineering-independent", slug: "engineering-independent", nameBn: "ইঞ্জিনিয়ারিং বিশ্ববিদ্যালয় (স্বতন্ত্র)", shortNameBn: "ইঞ্জিনিয়ারিং — স্বতন্ত্র" },
+  { id: "engineering-cluster", slug: "engineering-cluster", nameBn: "ইঞ্জিনিয়ারিং বিশ্ববিদ্যালয় (গুচ্ছ)", shortNameBn: "ইঞ্জিনিয়ারিং — গুচ্ছ" },
+  { id: "general-independent", slug: "general-independent", nameBn: "সাধারণ বিশ্ববিদ্যালয় (স্বতন্ত্র)", shortNameBn: "সাধারণ — স্বতন্ত্র" },
+  { id: "general-cluster", slug: "general-cluster", nameBn: "সাধারণ বিশ্ববিদ্যালয় (গুচ্ছ)", shortNameBn: "সাধারণ — গুচ্ছ" },
+];
+function getCategoryById(id) { return categories.find((c) => c.id === id); }
+
+function emptyUnit(partial) {
+  return {
+    nameBn: null, applicationStart: null, applicationEnd: null, examDate: null,
+    seats: null, eligibility: null, examPattern: null, subjects: [], resultMethod: null, circularUrl: null,
+    ...partial,
+  };
+}
+
+const universities = [
+  { id: "medical-dental", nameBn: "মেডিকেল ও ডেন্টাল কলেজ", nameEn: "Medical & Dental College Admission", shortName: "MBBS/BDS", category: "medical", admissionSession: "২০২৬-২৭", introBn: "সরকারি ও বেসরকারি মেডিকেল এবং ডেন্টাল কলেজে ভর্তি পরীক্ষা।",
+    units: [emptyUnit({ id: "default", applicationStart: "2026-10-01", applicationEnd: "2026-10-30", examDate: "2026-11-20", isDemoData: true })] },
+  { id: "armed-forces-medical", nameBn: "আর্মড ফোর্সেস মেডিকেল কলেজ", nameEn: "Armed Forces Medical College", shortName: "AFMC", category: "medical", subGroupBn: "আর্মড ফোর্সেস মেডিকেল কলেজ", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "army-medical", nameBn: "আর্মি মেডিকেল কলেজ", nameEn: "Army Medical College", shortName: "AMC", category: "medical", subGroupBn: "আর্মি মেডিকেল কলেজ", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "navy-medical", nameBn: "নেভি মেডিকেল কলেজ", nameEn: "Navy Medical College", shortName: "NMC", category: "medical", subGroupBn: "নেভি মেডিকেল কলেজ", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+
+  { id: "buet", nameBn: "বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয়", nameEn: "Bangladesh University of Engineering and Technology", shortName: "BUET", category: "engineering-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default", applicationStart: "2026-09-01", applicationEnd: "2026-09-15", examDate: "2026-10-01", isDemoData: true })] },
+  { id: "butex", nameBn: "বাংলাদেশ টেক্সটাইল বিশ্ববিদ্যালয়", nameEn: "Bangladesh University of Textiles", shortName: "BUTEX", category: "engineering-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "iut", nameBn: "ইসলামিক ইউনিভার্সিটি অব টেকনোলজি", nameEn: "Islamic University of Technology", shortName: "IUT", category: "engineering-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "mist", nameBn: "মিলিটারি ইনস্টিটিউট অব সায়েন্স অ্যান্ড টেকনোলজি", nameEn: "Military Institute of Science and Technology", shortName: "MIST", category: "engineering-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+
+  { id: "ruet", nameBn: "রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়", nameEn: "Rajshahi University of Engineering & Technology", shortName: "RUET", category: "engineering-cluster", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "kuet", nameBn: "খুলনা প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়", nameEn: "Khulna University of Engineering & Technology", shortName: "KUET", category: "engineering-cluster", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "cuet", nameBn: "চট্টগ্রাম প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়", nameEn: "Chittagong University of Engineering & Technology", shortName: "CUET", category: "engineering-cluster", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default", applicationStart: "2026-08-01", applicationEnd: "2026-08-25", examDate: "2026-09-15", isDemoData: true })] },
+
+  { id: "du", nameBn: "ঢাকা বিশ্ববিদ্যালয়", nameEn: "University of Dhaka", shortName: "DU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [
+      emptyUnit({ id: "science", nameBn: "বিজ্ঞান ইউনিট", applicationStart: "2026-08-01", applicationEnd: "2026-09-10", examDate: "2026-10-05", isDemoData: true }),
+      emptyUnit({ id: "arts", nameBn: "কলা, আইন ও সামাজিক বিজ্ঞান ইউনিট", applicationStart: "2026-09-05", applicationEnd: "2026-09-25", examDate: "2026-10-20", isDemoData: true }),
+      emptyUnit({ id: "business", nameBn: "ব্যবসায় শিক্ষা ইউনিট", applicationStart: "2026-09-20", applicationEnd: "2026-10-10", examDate: "2026-11-05", isDemoData: true }),
+      emptyUnit({ id: "fine-arts", nameBn: "চারুকলা ইউনিট", applicationStart: "2026-07-01", applicationEnd: "2026-07-20", examDate: "2026-08-15", isDemoData: true }),
+    ] },
+  { id: "ju", nameBn: "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়", nameEn: "Jahangirnagar University", shortName: "JU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "jnu", nameBn: "জগন্নাথ বিশ্ববিদ্যালয়", nameEn: "Jagannath University", shortName: "JnU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "ru", nameBn: "রাজশাহী বিশ্ববিদ্যালয়", nameEn: "University of Rajshahi", shortName: "RU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "cu", nameBn: "চট্টগ্রাম বিশ্ববিদ্যালয়", nameEn: "University of Chittagong", shortName: "CU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "bup", nameBn: "বাংলাদেশ ইউনিভার্সিটি অব প্রফেশনালস", nameEn: "Bangladesh University of Professionals", shortName: "BUP", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "ku", nameBn: "খুলনা বিশ্ববিদ্যালয়", nameEn: "Khulna University", shortName: "KU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "cou", nameBn: "কুমিল্লা বিশ্ববিদ্যালয়", nameEn: "Comilla University", shortName: "CoU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+  { id: "hstu", nameBn: "হাজী মোহাম্মদ দানেশ বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয়", nameEn: "Hajee Mohammad Danesh Science and Technology University", shortName: "HSTU", category: "general-independent", admissionSession: "২০২৬-২৭",
+    units: [emptyUnit({ id: "default" })] },
+
+  { id: "gst-cluster", nameBn: "GST গুচ্ছ", nameEn: "General, Science & Technology (GST) Cluster", shortName: "GST", category: "general-cluster", admissionSession: "২০২৬-২৭", introBn: "সাধারণ, বিজ্ঞান ও প্রযুক্তি বিশ্ববিদ্যালয় গুচ্ছ ভর্তি পরীক্ষা (২৪টি বিশ্ববিদ্যালয়)।",
+    units: [emptyUnit({ id: "default", applicationStart: "2026-09-01", applicationEnd: "2026-09-17", examDate: "2026-10-15", isDemoData: true })] },
+  { id: "agriculture-cluster", nameBn: "কৃষি গুচ্ছ", nameEn: "Agriculture Cluster", shortName: "কৃষি গুচ্ছ", category: "general-cluster", admissionSession: "২০২৬-২৭", introBn: "কৃষি বিশ্ববিদ্যালয় গুচ্ছ ভর্তি পরীক্ষা (৯টি বিশ্ববিদ্যালয়)।",
+    units: [emptyUnit({ id: "default" })] },
+];
+function getUniversityById(id) { return universities.find((u) => u.id === id); }
+function getUniversitiesByCategory(categoryId) { return universities.filter((u) => u.category === categoryId); }
+
+/* =========================================================================
+   BANGLA NUMERALS / DATE FORMAT
+   ========================================================================= */
+const BN_DIGITS = { "0":"০","1":"১","2":"২","3":"৩","4":"৪","5":"৫","6":"৬","7":"৭","8":"৮","9":"৯" };
+function toBanglaNumber(value) { return String(value).replace(/[0-9]/g, (d) => BN_DIGITS[d]); }
+const BN_MONTHS = ["জানুয়ারি","ফেব্রুয়ারি","মার্চ","এপ্রিল","মে","জুন","জুলাই","আগস্ট","সেপ্টেম্বর","অক্টোবর","নভেম্বর","ডিসেম্বর"];
+function formatBanglaDate(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split("-").map(Number);
+  if (!y || !m || !d) return null;
+  return `${toBanglaNumber(d)} ${BN_MONTHS[m - 1]} ${toBanglaNumber(y)}`;
+}
+
+/* =========================================================================
+   DATE MATH (Asia/Dhaka)
+   ========================================================================= */
+function getDhakaTodayISO() {
+  const formatter = new Intl.DateTimeFormat("en-CA", { timeZone: "Asia/Dhaka", year: "numeric", month: "2-digit", day: "2-digit" });
+  return formatter.format(new Date());
+}
+function isoToUtcMidnight(iso) { const [y, m, d] = iso.split("-").map(Number); return Date.UTC(y, m - 1, d); }
+function diffInDays(a, b) { return Math.round((isoToUtcMidnight(b) - isoToUtcMidnight(a)) / 86400000); }
+function isSameDay(a, b) { return a === b; }
+function isBefore(a, b) { return isoToUtcMidnight(a) < isoToUtcMidnight(b); }
+function isAfter(a, b) { return isoToUtcMidnight(a) > isoToUtcMidnight(b); }
+function daysUntil(today, target) { return diffInDays(today, target); }
+
+function useToday() {
+  const [today, setToday] = useState(getDhakaTodayISO);
+  useEffect(() => {
+    const now = new Date();
+    const dhakaNow = new Date(now.toLocaleString("en-US", { timeZone: "Asia/Dhaka" }));
+    const msUntilMidnight = new Date(dhakaNow.getFullYear(), dhakaNow.getMonth(), dhakaNow.getDate() + 1, 0, 0, 5).getTime() - dhakaNow.getTime();
+    const t = setTimeout(() => setToday(getDhakaTodayISO()), Math.max(msUntilMidnight, 1000));
+    return () => clearTimeout(t);
+  }, [today]);
+  return today;
+}
+
+/* =========================================================================
+   STATUS / COUNTDOWN
+   ========================================================================= */
+const STATUS_STYLES = {
+  "not-started": { labelBn: "আবেদন শুরু হয়নি", className: "bg-slate-100 text-slate-600 border-slate-200" },
+  ongoing: { labelBn: "আবেদন চলছে", className: "bg-emerald-100 text-emerald-700 border-emerald-200" },
+  "last-day": { labelBn: "আবেদনের শেষ দিন আজ", className: "bg-rose-100 text-rose-700 border-rose-200" },
+  closed: { labelBn: "আবেদন শেষ", className: "bg-slate-100 text-slate-600 border-slate-200" },
+  "upcoming-exam": { labelBn: "ভর্তি পরীক্ষা আসন্ন", className: "bg-amber-100 text-amber-700 border-amber-200" },
+  "exam-today": { labelBn: "আজ ভর্তি পরীক্ষা", className: "bg-gradient-to-r from-rose-600 to-orange-500 text-white border-transparent" },
+  completed: { labelBn: "পরীক্ষা সম্পন্ন", className: "bg-slate-100 text-slate-500 border-slate-200" },
+  unpublished: { labelBn: "তথ্য প্রকাশিত হয়নি", className: "bg-slate-50 text-slate-400 border-slate-200" },
+};
+function computeStatus(unit, today) {
+  const { applicationStart, applicationEnd, examDate } = unit;
+  const build = (status) => ({ status, ...STATUS_STYLES[status] });
+  if (!applicationStart && !applicationEnd && !examDate) return build("unpublished");
+  if (examDate && isSameDay(today, examDate)) return build("exam-today");
+  if (examDate && isAfter(today, examDate)) return build("completed");
+  if (applicationEnd && isSameDay(today, applicationEnd)) return build("last-day");
+  if (applicationStart && isBefore(today, applicationStart)) return build("not-started");
+  if (applicationStart && applicationEnd && !isBefore(today, applicationStart) && isBefore(today, applicationEnd)) return build("ongoing");
+  if (applicationEnd && isAfter(today, applicationEnd)) {
+    if (examDate) { const d = daysUntil(today, examDate); if (d <= 15) return build("upcoming-exam"); }
+    return build("closed");
+  }
+  if (examDate && isBefore(today, examDate)) return build("upcoming-exam");
+  return build("unpublished");
+}
+function computeCountdown(unit, today) {
+  if (!unit.examDate) return { labelBn: "তথ্য প্রকাশিত হয়নি", daysLeft: null, className: "bg-slate-50 text-slate-400 border-slate-200" };
+  const daysLeft = daysUntil(today, unit.examDate);
+  if (daysLeft < 0) return { labelBn: "পরীক্ষা সম্পন্ন", daysLeft, className: "bg-slate-100 text-slate-500 border-slate-200" };
+  if (daysLeft === 0) return { labelBn: "আজ পরীক্ষা", daysLeft, className: "bg-gradient-to-r from-rose-600 to-orange-500 text-white border-transparent font-semibold" };
+  if (daysLeft === 1) return { labelBn: "আগামীকাল", daysLeft, className: "bg-rose-100 text-rose-700 border-rose-200 font-semibold" };
+  const label = `আর ${toBanglaNumber(daysLeft)} দিন`;
+  if (daysLeft < 7) return { labelBn: label, daysLeft, className: "bg-rose-50 text-rose-700 border-rose-200" };
+  if (daysLeft < 15) return { labelBn: label, daysLeft, className: "bg-amber-50 text-amber-700 border-amber-200" };
+  return { labelBn: label, daysLeft, className: "bg-sky-50 text-sky-700 border-sky-200" };
+}
+function computeDeadlineDaysLeft(unit, today) {
+  if (!unit.applicationEnd) return null;
+  return daysUntil(today, unit.applicationEnd);
+}
+
+/* =========================================================================
+   CATEGORY THEME
+   ========================================================================= */
+const THEMES = {
+  medical: { icon: "stethoscope", badge: "border-teal-200 bg-teal-50 text-teal-700", solid: "bg-teal-600 hover:bg-teal-700", iconTile: "bg-teal-100 text-teal-600", activePill: "border-teal-600 bg-teal-600 text-white", dot: "bg-teal-500", cardHoverRing: "hover:ring-teal-300", topBorder: "border-t-teal-500" },
+  "engineering-independent": { icon: "cpu", badge: "border-indigo-200 bg-indigo-50 text-indigo-700", solid: "bg-indigo-600 hover:bg-indigo-700", iconTile: "bg-indigo-100 text-indigo-600", activePill: "border-indigo-600 bg-indigo-600 text-white", dot: "bg-indigo-500", cardHoverRing: "hover:ring-indigo-300", topBorder: "border-t-indigo-500" },
+  "engineering-cluster": { icon: "factory", badge: "border-violet-200 bg-violet-50 text-violet-700", solid: "bg-violet-600 hover:bg-violet-700", iconTile: "bg-violet-100 text-violet-600", activePill: "border-violet-600 bg-violet-600 text-white", dot: "bg-violet-500", cardHoverRing: "hover:ring-violet-300", topBorder: "border-t-violet-500" },
+  "general-independent": { icon: "cap", badge: "border-blue-200 bg-blue-50 text-blue-700", solid: "bg-blue-600 hover:bg-blue-700", iconTile: "bg-blue-100 text-blue-600", activePill: "border-blue-600 bg-blue-600 text-white", dot: "bg-blue-500", cardHoverRing: "hover:ring-blue-300", topBorder: "border-t-blue-500" },
+  "general-cluster": { icon: "users", badge: "border-fuchsia-200 bg-fuchsia-50 text-fuchsia-700", solid: "bg-fuchsia-600 hover:bg-fuchsia-700", iconTile: "bg-fuchsia-100 text-fuchsia-600", activePill: "border-fuchsia-600 bg-fuchsia-600 text-white", dot: "bg-fuchsia-500", cardHoverRing: "hover:ring-fuchsia-300", topBorder: "border-t-fuchsia-500" },
+};
+function getCategoryTheme(id) { return THEMES[id]; }
+
+/* =========================================================================
+   FLATTEN / SUMMARY / FILTERS
+   ========================================================================= */
+function flattenUnits(list) {
+  const rows = [];
+  for (const university of list) for (const unit of university.units) rows.push({ university, unit });
+  return rows;
+}
+function computeSummaryStats(list, rows, today) {
+  let ongoingCount = 0, upcomingExamCount = 0, examsThisWeekCount = 0;
+  for (const { unit } of rows) {
+    const { status } = computeStatus(unit, today);
+    if (status === "ongoing" || status === "last-day") ongoingCount++;
+    if (status === "upcoming-exam" || status === "exam-today") upcomingExamCount++;
+    if (unit.examDate) { const d = daysUntil(today, unit.examDate); if (d >= 0 && d <= 7) examsThisWeekCount++; }
+  }
+  return { totalInstitutions: list.length, ongoingCount, upcomingExamCount, examsThisWeekCount };
+}
+function getUpcomingExams(rows, today, limit) {
+  return rows.filter((r) => r.unit.examDate && daysUntil(today, r.unit.examDate) >= 0)
+    .sort((a, b) => daysUntil(today, a.unit.examDate) - daysUntil(today, b.unit.examDate)).slice(0, limit);
+}
+function getUrgentDeadlines(rows, today, withinDays) {
+  return rows.filter((r) => { const d = computeDeadlineDaysLeft(r.unit, today); return d !== null && d >= 0 && d <= withinDays; })
+    .sort((a, b) => computeDeadlineDaysLeft(a.unit, today) - computeDeadlineDaysLeft(b.unit, today));
+}
+function searchRows(rows, query) {
+  const q = query.trim().toLowerCase();
+  if (!q) return rows;
+  return rows.filter(({ university, unit }) => {
+    const category = getCategoryById(university.category);
+    const hay = [university.nameBn, university.nameEn, university.shortName, unit.nameBn || "", category?.nameBn || "", category?.shortNameBn || ""].join(" ").toLowerCase();
+    return hay.includes(q);
+  });
+}
+function filterByStatus(rows, filter, today) {
+  if (filter === "all") return rows;
+  return rows.filter((r) => {
+    const { status } = computeStatus(r.unit, today);
+    if (filter === "ongoing") return status === "ongoing" || status === "last-day";
+    if (filter === "upcoming-exam") return status === "upcoming-exam" || status === "exam-today";
+    if (filter === "closed") return status === "closed";
+    if (filter === "completed") return status === "completed";
+    return true;
+  });
+}
+function dayRank(daysLeft) { if (daysLeft === null) return Infinity; if (daysLeft >= 0) return daysLeft; return 100000 - daysLeft; }
+function sortRows(rows, key, today) {
+  const sorted = [...rows];
+  if (key === "name") { sorted.sort((a, b) => a.university.nameBn.localeCompare(b.university.nameBn, "bn")); return sorted; }
+  if (key === "application-deadline") { sorted.sort((a, b) => dayRank(computeDeadlineDaysLeft(a.unit, today)) - dayRank(computeDeadlineDaysLeft(b.unit, today))); return sorted; }
+  sorted.sort((a, b) => {
+    const da = a.unit.examDate ? daysUntil(today, a.unit.examDate) : null;
+    const db = b.unit.examDate ? daysUntil(today, b.unit.examDate) : null;
+    return dayRank(da) - dayRank(db);
+  });
+  return sorted;
+}
+
+/* =========================================================================
+   ICONS (small inline SVGs, lucide-style)
+   ========================================================================= */
+function Ic({ children, className }) {
+  return <svg className={className || "h-4 w-4"} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">{children}</svg>;
+}
+const IconCalendarClock = (p) => <Ic {...p}><path d="M21 7.5V6a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h5"/><path d="M16 2v4M8 2v4M3 10h5"/><circle cx="18" cy="18" r="4"/><path d="M18 16.5V18l1 1"/></Ic>;
+const IconGrid = (p) => <Ic {...p}><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></Ic>;
+const IconList = (p) => <Ic {...p}><path d="M3 6h18M3 12h12M3 18h8"/></Ic>;
+const IconBook = (p) => <Ic {...p}><path d="M4 4.5A2.5 2.5 0 0 1 6.5 2H20v18H6.5A2.5 2.5 0 0 0 4 22.5v-18Z"/><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/></Ic>;
+const IconSearch = (p) => <Ic {...p}><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></Ic>;
+const IconChevronRight = (p) => <Ic {...p}><path d="m9 18 6-6-6-6"/></Ic>;
+const IconArrowLeft = (p) => <Ic {...p}><path d="M19 12H5M12 19l-7-7 7-7"/></Ic>;
+const IconAlert = (p) => <Ic {...p}><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></Ic>;
+const IconSparkles = (p) => <Ic {...p}><path d="M12 3v4M12 17v4M3 12h4M17 12h4M5.6 5.6l2.8 2.8M15.6 15.6l2.8 2.8M18.4 5.6l-2.8 2.8M8.4 15.6l-2.8 2.8"/></Ic>;
+const IconExternal = (p) => <Ic {...p}><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><path d="M15 3h6v6M10 14 21 3"/></Ic>;
+const IconFileX = (p) => <Ic {...p}><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2Z"/><path d="M14 2v6h6M9.5 12.5l5 5M14.5 12.5l-5 5"/></Ic>;
+const IconBuilding = (p) => <Ic {...p}><rect x="4" y="2" width="16" height="20" rx="1"/><path d="M9 22v-4h6v4M9 6h1M14 6h1M9 10h1M14 10h1M9 14h1M14 14h1"/></Ic>;
+const IconFileClock = (p) => <Ic {...p}><path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h8"/><path d="M14 2v6h6"/><circle cx="17" cy="17" r="4"/><path d="M17 15.5V17l1 .8"/></Ic>;
+const IconAlarm = (p) => <Ic {...p}><circle cx="12" cy="13" r="7"/><path d="M12 9v4l2 1M5 3 3 5M19 3l2 2M9 2h6"/></Ic>;
+const IconCalendarDays = (p) => <Ic {...p}><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/><path d="M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/></Ic>;
+const IconInbox = (p) => <Ic {...p}><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11Z"/></Ic>;
+const IconStethoscope = (p) => <Ic {...p}><path d="M4 4v6a5 5 0 0 0 10 0V4M9 15a6 6 0 0 0 12 0v-3"/><circle cx="20" cy="10" r="2"/><circle cx="4" cy="4" r="0"/></Ic>;
+const IconCpu = (p) => <Ic {...p}><rect x="6" y="6" width="12" height="12" rx="1"/><path d="M9 2v3M15 2v3M9 19v3M15 19v3M2 9h3M2 15h3M19 9h3M19 15h3"/></Ic>;
+const IconFactory = (p) => <Ic {...p}><path d="M3 21V10l6 4v-4l6 4V6l6 4v11H3Z"/></Ic>;
+const IconCap = (p) => <Ic {...p}><path d="m22 10-10-5L2 10l10 5 10-5Z"/><path d="M6 12v5c0 1 2.7 3 6 3s6-2 6-3v-5"/></Ic>;
+const IconUsers = (p) => <Ic {...p}><circle cx="9" cy="8" r="3"/><path d="M2 20c0-3.3 3.1-6 7-6s7 2.7 7 6"/><circle cx="17" cy="8" r="3" opacity="0.6"/><path d="M16 14c2.8.6 5 2.7 5 6" opacity="0.6"/></Ic>;
+const ICON_MAP = { stethoscope: IconStethoscope, cpu: IconCpu, factory: IconFactory, cap: IconCap, users: IconUsers };
+
+/* =========================================================================
+   SHARED UI
+   ========================================================================= */
+function DemoTag() {
+  return <span title="এটি বাস্তব সার্কুলার নয় — শুধু ইন্টারফেস প্রদর্শনের জন্য নমুনা তারিখ ব্যবহার করা হয়েছে।" className="inline-flex items-center whitespace-nowrap rounded-full border border-violet-200 bg-violet-50 px-2 py-0.5 text-[10px] font-medium text-violet-600">ডেমো ডেটা</span>;
+}
+function StatusBadge({ unit, today }) {
+  const info = computeStatus(unit, today);
+  return <span className={`inline-flex items-center whitespace-nowrap rounded-full border px-2.5 py-1 text-xs font-medium ${info.className}`}>{info.labelBn}</span>;
+}
+function CountdownBadge({ unit, today }) {
+  const info = computeCountdown(unit, today);
+  return <span className={`inline-flex items-center whitespace-nowrap rounded-md border px-2.5 py-1 text-xs ${info.className}`}>{info.labelBn}</span>;
+}
+function EmptyState({ title, description }) {
+  return (
+    <div className="flex flex-col items-center justify-center gap-3 rounded-xl border border-dashed border-slate-200 bg-white px-6 py-14 text-center">
+      <div className="flex h-12 w-12 items-center justify-center rounded-full bg-slate-50 text-slate-300"><IconInbox className="h-6 w-6" /></div>
+      <p className="text-sm font-medium text-slate-600">{title}</p>
+      {description && <p className="max-w-sm text-xs text-slate-400">{description}</p>}
+    </div>
+  );
+}
+
+/* =========================================================================
+   LAYOUT
+   ========================================================================= */
+function Header() {
+  const today = useToday();
+  const formatted = formatBanglaDate(today);
+  return (
+    <header className="border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-3 px-4 py-4 sm:px-6">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-600 via-violet-600 to-fuchsia-600 text-white shadow-soft"><IconCalendarClock className="h-5 w-5" /></div>
+          <div>
+            <h1 className="text-lg font-bold leading-tight text-navy-900 sm:text-xl">অ্যাডমিশন ক্যালেন্ডার</h1>
+            <p className="text-xs leading-tight text-slate-500 sm:text-sm">একনজরে বিশ্ববিদ্যালয়সমূহের ভর্তি পরীক্ষার সূচি ও তথ্য</p>
+          </div>
+        </div>
+        <div className="flex items-center gap-2 text-xs text-slate-400 sm:text-sm">
+          <span className="hidden sm:inline">সর্বশেষ আপডেট:</span>
+          <span className="font-medium text-slate-500">{formatted ?? "—"}</span>
+        </div>
+      </div>
+    </header>
+  );
+}
+const TABS = [
+  { id: "overview", labelBn: "একনজরে অ্যাডমিশন ক্যালেন্ডার", Icon: IconGrid },
+  { id: "category", labelBn: "ক্যাটাগরি অনুযায়ী অ্যাডমিশন ক্যালেন্ডার", Icon: IconList },
+  { id: "info", labelBn: "অ্যাডমিশন তথ্যকণিকা", Icon: IconBook },
+];
+function MainTabs({ active, onChange }) {
+  return (
+    <div className="sticky top-0 z-20 border-b border-slate-200 bg-white/95 backdrop-blur">
+      <div className="mx-auto grid max-w-7xl grid-cols-3 gap-1 px-2 py-2 sm:gap-2 sm:px-6">
+        {TABS.map((tab) => {
+          const isActive = tab.id === active;
+          return (
+            <button key={tab.id} onClick={() => onChange(tab.id)}
+              className={`flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-lg px-1 py-2 text-center text-[11px] font-semibold leading-tight transition-all sm:min-h-[64px] sm:flex-row sm:gap-2 sm:text-sm ${isActive ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-card" : "text-slate-500 hover:bg-slate-100"}`}>
+              <tab.Icon className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" />
+              <span>{tab.labelBn}</span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+function Footer() {
+  return (
+    <footer className="border-t border-slate-200 bg-white">
+      <div className="mx-auto max-w-7xl px-4 py-8 text-center sm:px-6">
+        <p className="text-sm font-bold text-navy-800">অ্যাডমিশন ক্যালেন্ডার</p>
+        <p className="mt-1 text-xs text-slate-500">একনজরে বিশ্ববিদ্যালয়সমূহের ভর্তি পরীক্ষার সূচি ও তথ্য</p>
+        <p className="mt-4 text-xs text-slate-400">সর্বশেষ তথ্যের জন্য সংশ্লিষ্ট বিশ্ববিদ্যালয়ের অফিসিয়াল সার্কুলার অনুসরণ করুন।</p>
+        <p className="mt-1 text-xs text-slate-400">ভর্তি সংক্রান্ত সিদ্ধান্ত নেওয়ার আগে সংশ্লিষ্ট বিশ্ববিদ্যালয়ের অফিসিয়াল ওয়েবসাইট ও প্রকাশিত সার্কুলার যাচাই করুন।</p>
+      </div>
+    </footer>
+  );
+}
+
+/* =========================================================================
+   TAB 1 — CALENDAR
+   ========================================================================= */
+const STAT_META = [
+  { key: "total", label: "মোট প্রতিষ্ঠান", Icon: IconBuilding, tone: "text-indigo-700 bg-indigo-50", topBorder: "border-t-indigo-400" },
+  { key: "ongoing", label: "আবেদন চলছে", Icon: IconFileClock, tone: "text-emerald-700 bg-emerald-50", topBorder: "border-t-emerald-400" },
+  { key: "upcoming", label: "আসন্ন ভর্তি পরীক্ষা", Icon: IconAlarm, tone: "text-amber-700 bg-amber-50", topBorder: "border-t-amber-400" },
+  { key: "thisWeek", label: "এই সপ্তাহে পরীক্ষা", Icon: IconCalendarDays, tone: "text-rose-700 bg-rose-50", topBorder: "border-t-rose-400" },
+];
+function SummaryStatsBar({ stats }) {
+  const values = { total: stats.totalInstitutions, ongoing: stats.ongoingCount, upcoming: stats.upcomingExamCount, thisWeek: stats.examsThisWeekCount };
+  return (
+    <div className="grid grid-cols-2 gap-3 sm:grid-cols-4">
+      {STAT_META.map((item) => (
+        <div key={item.key} className={`flex items-center gap-3 rounded-xl border border-slate-200 border-t-4 bg-white p-3 shadow-soft sm:p-4 ${item.topBorder}`}>
+          <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg ${item.tone}`}><item.Icon className="h-4 w-4" /></div>
+          <div className="min-w-0">
+            <p className="text-lg font-bold leading-tight text-navy-900 sm:text-xl">{toBanglaNumber(values[item.key])}</p>
+            <p className="truncate text-[11px] leading-tight text-slate-500 sm:text-xs">{item.label}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  );
+}
+function buildDeadlineMessage(row, today) {
+  const daysLeft = computeDeadlineDaysLeft(row.unit, today);
+  const unitLabel = row.unit.nameBn ? ` — ${row.unit.nameBn}` : "";
+  const dayText = daysLeft === 0 ? "আজ শেষ দিন" : `আর মাত্র ${toBanglaNumber(daysLeft ?? 0)} দিন বাকি`;
+  return `${row.university.nameBn}${unitLabel} — আবেদনের ${dayText}`;
+}
+function DeadlineTicker({ rows, today }) {
+  if (rows.length === 0) return null;
+  const messages = rows.map((r) => buildDeadlineMessage(r, today));
+  const track = [...messages, ...messages];
+  const durationSeconds = Math.max(messages.length * 7, 14);
+  return (
+    <div className="flex items-stretch overflow-hidden rounded-xl border border-rose-200 bg-gradient-to-r from-rose-50 to-orange-50 shadow-soft">
+      <div className="flex shrink-0 items-center gap-2 bg-rose-600 px-3 py-2.5 sm:px-4">
+        <IconAlert className="h-4 w-4 text-white" /><span className="whitespace-nowrap text-xs font-bold text-white sm:text-sm">জরুরি</span>
+      </div>
+      <div className="min-w-0 flex-1 overflow-hidden py-2.5">
+        <div className="marquee-track flex w-max items-center whitespace-nowrap" style={{ animationDuration: `${durationSeconds}s` }}>
+          {track.map((message, i) => (
+            <span key={i} className="flex items-center whitespace-nowrap px-4 text-sm font-medium text-rose-700">{message}<span className="ml-4 text-rose-300">●</span></span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+function UpcomingTests({ rows, today }) {
+  return (
+    <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
+      <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-navy-900 sm:text-base"><IconSparkles className="h-4 w-4 text-violet-500" />সামনে যেসব ভর্তি পরীক্ষা</h2>
+      {rows.length === 0 ? (
+        <EmptyState title="আসন্ন কোনো ভর্তি পরীক্ষার তথ্য প্রকাশিত হয়নি" description="সার্কুলার প্রকাশিত হলে তথ্য এখানে আপডেট করা হবে।" />
+      ) : (
+        <ul className="divide-y divide-slate-200">
+          {rows.map(({ university, unit }, index) => (
+            <li key={`${university.id}-${unit.id}`} className="flex items-start justify-between gap-3 py-2.5">
+              <div className="flex min-w-0 items-start gap-2.5">
+                <span className="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-indigo-500 to-violet-500 text-[11px] font-bold text-white">{toBanglaNumber(index + 1)}</span>
+                <div className="min-w-0">
+                  <p className="text-sm font-medium leading-snug text-navy-800">{university.shortName}{unit.nameBn && <span className="font-normal text-slate-500"> — {unit.nameBn}</span>}</p>
+                  {unit.isDemoData && <DemoTag />}
+                </div>
+              </div>
+              <CountdownBadge unit={unit} today={today} />
+            </li>
+          ))}
+        </ul>
+      )}
+    </section>
+  );
+}
+const STATUS_OPTIONS = [
+  { value: "all", labelBn: "সব অবস্থা" }, { value: "ongoing", labelBn: "আবেদন চলছে" },
+  { value: "closed", labelBn: "আবেদন শেষ" }, { value: "upcoming-exam", labelBn: "পরীক্ষা আসন্ন" }, { value: "completed", labelBn: "পরীক্ষা সম্পন্ন" },
+];
+const SORT_OPTIONS = [
+  { value: "nearest-exam", labelBn: "নিকটতম পরীক্ষা" }, { value: "application-deadline", labelBn: "আবেদন শেষ" }, { value: "name", labelBn: "বিশ্ববিদ্যালয়ের নাম" },
+];
+const selectClass = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 sm:text-sm";
+function TableToolbar({ query, onQueryChange, category, onCategoryChange, status, onStatusChange, sort, onSortChange }) {
+  return (
+    <div className="space-y-3">
+      <div className="relative">
+        <IconSearch className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" />
+        <input type="search" value={query} onChange={(e) => onQueryChange(e.target.value)}
+          placeholder="বিশ্ববিদ্যালয়ের নাম বা সংক্ষিপ্ত রূপ দিয়ে খুঁজুন — যেমন BUET, ঢাকা বিশ্ববিদ্যালয়, GST"
+          className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
+      </div>
+      <div className="grid grid-cols-3 gap-2">
+        <select className={selectClass} value={category} onChange={(e) => onCategoryChange(e.target.value)}>
+          <option value="all">সব ক্যাটাগরি</option>
+          {categories.map((c) => <option key={c.id} value={c.id}>{c.shortNameBn}</option>)}
+        </select>
+        <select className={selectClass} value={status} onChange={(e) => onStatusChange(e.target.value)}>
+          {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.labelBn}</option>)}
+        </select>
+        <select className={selectClass} value={sort} onChange={(e) => onSortChange(e.target.value)}>
+          {SORT_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.labelBn}</option>)}
+        </select>
+      </div>
+    </div>
+  );
+}
+function AdmissionTable({ rows, today, onOpen }) {
+  return (
+    <div className="hidden max-h-[75vh] overflow-auto rounded-xl border border-slate-200 bg-white shadow-soft sm:block">
+      <table className="w-full min-w-[900px] border-collapse text-left text-sm">
+        <thead className="sticky-thead">
+          <tr className="text-xs font-semibold uppercase tracking-wide text-white">
+            {["ক্রম","ক্যাটাগরি","বিশ্ববিদ্যালয়","ইউনিট","আবেদন শুরু","আবেদন শেষ","ভর্তি পরীক্ষা","বাকি দিন","বিস্তারিত"].map((h, i) => (
+              <th key={i} className={`whitespace-nowrap border border-indigo-500 bg-indigo-700 px-3 py-3 ${i === 8 ? "text-right" : ""}`}>{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {rows.map(({ university, unit }, index) => {
+            const category = getCategoryById(university.category);
+            const theme = getCategoryTheme(university.category);
+            return (
+              <tr key={`${university.id}-${unit.id}`} className={`align-top hover:bg-indigo-50/40 ${index % 2 === 1 ? "bg-slate-50/60" : "bg-white"}`}>
+                <td className="whitespace-nowrap border border-slate-200 px-3 py-3 text-slate-400">{toBanglaNumber(index + 1)}</td>
+                <td className="whitespace-nowrap border border-slate-200 px-3 py-3">
+                  <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[11px] font-medium ${theme.badge}`}><span className={`h-1.5 w-1.5 rounded-full ${theme.dot}`}></span>{category?.shortNameBn ?? "—"}</span>
+                </td>
+                <td className="border border-slate-200 px-3 py-3"><div className="font-medium text-navy-900">{university.nameBn}</div><div className="text-xs text-slate-400">{university.shortName}</div></td>
+                <td className="border border-slate-200 px-3 py-3 text-slate-600"><div className="flex items-center gap-1.5"><span>{unit.nameBn ?? "—"}</span>{unit.isDemoData && <DemoTag />}</div></td>
+                <td className="whitespace-nowrap border border-slate-200 px-3 py-3 text-slate-600">{formatBanglaDate(unit.applicationStart) ?? "তথ্য প্রকাশিত হয়নি"}</td>
+                <td className="whitespace-nowrap border border-slate-200 px-3 py-3 text-slate-600">{formatBanglaDate(unit.applicationEnd) ?? "তথ্য প্রকাশিত হয়নি"}</td>
+                <td className="whitespace-nowrap border border-slate-200 px-3 py-3 text-slate-600">{formatBanglaDate(unit.examDate) ?? "তথ্য প্রকাশিত হয়নি"}</td>
+                <td className="whitespace-nowrap border border-slate-200 px-3 py-3"><CountdownBadge unit={unit} today={today} /></td>
+                <td className="whitespace-nowrap border border-slate-200 px-3 py-3 text-right"><button onClick={() => onOpen(university.id)} className="inline-flex items-center gap-0.5 text-xs font-medium text-indigo-600 hover:text-indigo-800">বিস্তারিত<IconChevronRight className="h-3.5 w-3.5" /></button></td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
+  );
+}
+function AdmissionMobileList({ rows, today, onOpen }) {
+  return (
+    <div className="space-y-3 sm:hidden">
+      {rows.map(({ university, unit }) => {
+        const category = getCategoryById(university.category);
+        const theme = getCategoryTheme(university.category);
+        return (
+          <div key={`${university.id}-${unit.id}`} onClick={() => onOpen(university.id)} role="button" tabIndex={0}
+            className={`block cursor-pointer rounded-xl border border-slate-200 border-t-4 bg-white p-4 shadow-soft active:bg-slate-50 ${theme.topBorder}`}>
+            <div className="flex items-start justify-between gap-2">
+              <div className="min-w-0">
+                <span className={`inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-medium ${theme.badge}`}><span className={`h-1.5 w-1.5 rounded-full ${theme.dot}`}></span>{category?.shortNameBn}</span>
+                <h3 className="mt-1.5 text-sm font-bold leading-snug text-navy-900">{university.nameBn}</h3>
+                <div className="mt-1 flex flex-wrap items-center gap-1.5">{unit.nameBn && <p className="text-xs text-slate-500">{unit.nameBn}</p>}{unit.isDemoData && <DemoTag />}</div>
+              </div>
+              <IconChevronRight className="mt-1 h-4 w-4 shrink-0 text-slate-300" />
+            </div>
+            <div className="mt-3 flex flex-wrap items-center gap-2"><CountdownBadge unit={unit} today={today} /></div>
+            <dl className="mt-3 grid grid-cols-2 divide-x divide-slate-200 border-t border-slate-200 pt-3 text-xs">
+              <div className="pr-3"><dt className="text-slate-400">ভর্তি পরীক্ষা</dt><dd className="font-medium text-slate-700">{formatBanglaDate(unit.examDate) ?? "তথ্য প্রকাশিত হয়নি"}</dd></div>
+              <div className="pl-3"><dt className="text-slate-400">আবেদন শেষ</dt><dd className="font-medium text-slate-700">{formatBanglaDate(unit.applicationEnd) ?? "তথ্য প্রকাশিত হয়নি"}</dd></div>
+            </dl>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+function CalendarTab({ onOpenUniversity }) {
+  const today = useToday();
+  const [query, setQuery] = useState("");
+  const [category, setCategory] = useState("all");
+  const [status, setStatus] = useState("all");
+  const [sort, setSort] = useState("nearest-exam");
+  const allRows = useMemo(() => flattenUnits(universities), []);
+  const stats = useMemo(() => computeSummaryStats(universities, allRows, today), [allRows, today]);
+  const upcomingExams = useMemo(() => getUpcomingExams(allRows, today, 5), [allRows, today]);
+  const urgentDeadlines = useMemo(() => getUrgentDeadlines(allRows, today, 3), [allRows, today]);
+  const visibleRows = useMemo(() => {
+    let rows = allRows;
+    if (category !== "all") rows = rows.filter((r) => r.university.category === category);
+    rows = filterByStatus(rows, status, today);
+    rows = searchRows(rows, query);
+    rows = sortRows(rows, sort, today);
+    return rows;
+  }, [allRows, category, status, query, sort, today]);
+  return (
+    <div className="space-y-5">
+      <SummaryStatsBar stats={stats} />
+      <DeadlineTicker rows={urgentDeadlines} today={today} />
+      <UpcomingTests rows={upcomingExams} today={today} />
+      <section>
+        <h2 className="mb-3 text-sm font-bold text-navy-900 sm:text-base">সকল বিশ্ববিদ্যালয়ের ভর্তি সময়সূচি</h2>
+        <TableToolbar query={query} onQueryChange={setQuery} category={category} onCategoryChange={setCategory} status={status} onStatusChange={setStatus} sort={sort} onSortChange={setSort} />
+        <div className="mt-4">
+          {visibleRows.length === 0 ? <EmptyState title="কোনো ফলাফল পাওয়া যায়নি" description="অনুসন্ধান বা ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন।" /> : (
+            <React.Fragment><AdmissionTable rows={visibleRows} today={today} onOpen={onOpenUniversity} /><AdmissionMobileList rows={visibleRows} today={today} onOpen={onOpenUniversity} /></React.Fragment>
+          )}
+        </div>
+      </section>
+    </div>
+  );
+}
+
+/* =========================================================================
+   TAB 2 — CATEGORY
+   ========================================================================= */
+function CategoryGrid({ onSelect }) {
+  return (
+    <div>
+      <h2 className="mb-1 text-sm font-bold text-navy-900 sm:text-base">ক্যাটাগরি বেছে নিন</h2>
+      <p className="mb-4 text-xs text-slate-500 sm:text-sm">একটি ক্যাটাগরিতে ক্লিক করে সংশ্লিষ্ট বিশ্ববিদ্যালয়সমূহের ভর্তি তথ্য দেখুন।</p>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        {categories.map((cat) => {
+          const count = getUniversitiesByCategory(cat.id).length;
+          const theme = getCategoryTheme(cat.id);
+          const Icon = ICON_MAP[theme.icon];
+          return (
+            <button key={cat.id} onClick={() => onSelect(cat.id)}
+              className={`flex items-center justify-between gap-3 rounded-xl bg-white p-4 text-left shadow-soft ring-1 ring-slate-200 transition-all hover:-translate-y-0.5 hover:shadow-card hover:ring-2 ${theme.cardHoverRing}`}>
+              <div className="flex items-center gap-3">
+                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${theme.iconTile}`}><Icon className="h-5 w-5" /></div>
+                <div><p className="text-sm font-bold text-navy-900 sm:text-base">{cat.nameBn}</p><p className="mt-0.5 text-xs text-slate-400">{toBanglaNumber(count)}টি প্রতিষ্ঠান</p></div>
+              </div>
+              <IconChevronRight className="h-5 w-5 shrink-0 text-slate-300" />
+            </button>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+function CategoryPills({ active, onSelect, onBack }) {
+  return (
+    <div className="flex items-center gap-2">
+      <button onClick={onBack} className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-500 hover:bg-slate-50"><IconArrowLeft className="h-4 w-4" /></button>
+      <div className="flex gap-2 overflow-x-auto pb-1">
+        {categories.map((cat) => {
+          const isActive = cat.id === active;
+          const theme = getCategoryTheme(cat.id);
+          return <button key={cat.id} onClick={() => onSelect(cat.id)} className={`shrink-0 whitespace-nowrap rounded-full border px-3.5 py-2 text-xs font-medium shadow-sm sm:text-sm ${isActive ? theme.activePill : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}>{cat.shortNameBn}</button>;
+        })}
+      </div>
+    </div>
+  );
+}
+function UniversityCard({ university, onOpen }) {
+  const today = useToday();
+  const [activeUnitId, setActiveUnitId] = useState(university.units[0]?.id);
+  const activeUnit = university.units.find((u) => u.id === activeUnitId) ?? university.units[0];
+  const hasNamedUnits = university.units.some((u) => u.nameBn);
+  const theme = getCategoryTheme(university.category);
+  return (
+    <div className={`rounded-xl border border-slate-200 border-t-4 bg-white p-4 shadow-soft sm:p-5 ${theme.topBorder}`}>
+      <div className="flex items-start justify-between gap-3">
+        <div className="min-w-0">
+          <h3 className="text-base font-bold leading-snug text-navy-900">{university.nameBn}<span className="ml-1.5 text-sm font-medium text-slate-400">({university.shortName})</span></h3>
+          {university.subGroupBn && <p className="text-xs text-slate-400">{university.subGroupBn}</p>}
+        </div>
+      </div>
+      {hasNamedUnits && university.units.length > 1 && (
+        <div className="mt-3 flex gap-1.5 overflow-x-auto pb-1">
+          {university.units.map((unit) => (
+            <button key={unit.id} onClick={() => setActiveUnitId(unit.id)} className={`shrink-0 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium ${unit.id === activeUnit?.id ? theme.activePill : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}>{unit.nameBn}</button>
+          ))}
+        </div>
+      )}
+      {activeUnit && (
+        <React.Fragment>
+          <div className="mt-4 grid grid-cols-3 gap-2 text-center sm:gap-3">
+            <div className="rounded-lg bg-slate-50 px-2 py-2.5"><p className="text-[10px] text-slate-400 sm:text-xs">আবেদন শুরু</p><p className="mt-0.5 text-xs font-semibold text-navy-800 sm:text-sm">{formatBanglaDate(activeUnit.applicationStart) ?? "প্রকাশিত হয়নি"}</p></div>
+            <div className="rounded-lg bg-slate-50 px-2 py-2.5"><p className="text-[10px] text-slate-400 sm:text-xs">আবেদন শেষ</p><p className="mt-0.5 text-xs font-semibold text-navy-800 sm:text-sm">{formatBanglaDate(activeUnit.applicationEnd) ?? "প্রকাশিত হয়নি"}</p></div>
+            <div className="rounded-lg bg-slate-50 px-2 py-2.5"><p className="text-[10px] text-slate-400 sm:text-xs">ভর্তি পরীক্ষা</p><p className="mt-0.5 text-xs font-semibold text-navy-800 sm:text-sm">{formatBanglaDate(activeUnit.examDate) ?? "প্রকাশিত হয়নি"}</p></div>
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <StatusBadge unit={activeUnit} today={today} />
+            {activeUnit.examDate && <CountdownBadge unit={activeUnit} today={today} />}
+            {activeUnit.isDemoData && <DemoTag />}
+          </div>
+        </React.Fragment>
+      )}
+      <button onClick={() => onOpen(university.id)} className={`mt-4 flex w-full items-center justify-center gap-1 rounded-lg py-2 text-sm font-semibold text-white shadow-sm transition-colors ${theme.solid}`}>বিস্তারিত তথ্য দেখুন<IconChevronRight className="h-4 w-4" /></button>
+    </div>
+  );
+}
+function CategoryTab({ onOpenUniversity }) {
+  const [selected, setSelected] = useState(null);
+  const universityList = useMemo(() => (selected ? getUniversitiesByCategory(selected) : []), [selected]);
+  const category = selected ? getCategoryById(selected) : null;
+  return (
+    <div className="space-y-5">
+      {!selected ? <CategoryGrid onSelect={setSelected} /> : (
+        <React.Fragment>
+          <CategoryPills active={selected} onSelect={setSelected} onBack={() => setSelected(null)} />
+          <div>
+            <h2 className="mb-3 text-sm font-bold text-navy-900 sm:text-base">{category?.nameBn}</h2>
+            {universityList.length === 0 ? <EmptyState title="এই ক্যাটাগরিতে কোনো তথ্য পাওয়া যায়নি" /> : (
+              <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+                {universityList.map((u) => <UniversityCard key={u.id} university={u} onOpen={onOpenUniversity} />)}
+              </div>
+            )}
+          </div>
+        </React.Fragment>
+      )}
+    </div>
+  );
+}
+
+/* =========================================================================
+   TAB 3 — INFO
+   ========================================================================= */
+function UniversityPicker({ universityList, onSelect }) {
+  return (
+    <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
+      {universityList.map((u) => (
+        <button key={u.id} onClick={() => onSelect(u.id)} className="flex items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white p-4 text-left shadow-soft transition-colors hover:border-indigo-300 hover:bg-indigo-50/40">
+          <div className="min-w-0"><p className="text-sm font-bold leading-snug text-navy-900">{u.nameBn}</p><p className="text-xs text-slate-400">{u.shortName}</p></div>
+          <IconChevronRight className="h-4 w-4 shrink-0 text-slate-300" />
+        </button>
+      ))}
+    </div>
+  );
+}
+function InfoSection({ title, children, isEmpty, emptyText }) {
+  return (
+    <div className="border-t border-slate-200 py-4 first:border-t-0 first:pt-0">
+      <h4 className="mb-2 text-sm font-bold text-navy-800">{title}</h4>
+      {isEmpty ? <p className="text-sm text-slate-400">{emptyText || "তথ্য প্রকাশিত হয়নি"}</p> : children}
+    </div>
+  );
+}
+function CircularButton({ url, solidClassName }) {
+  if (!url) return <button disabled className="flex w-full cursor-not-allowed items-center justify-center gap-2 rounded-lg border border-slate-200 bg-slate-50 py-2.5 text-sm font-medium text-slate-400"><IconFileX className="h-4 w-4" />সার্কুলার প্রকাশিত হয়নি</button>;
+  return <a href={url} target="_blank" rel="noopener noreferrer" className={`flex w-full items-center justify-center gap-2 rounded-lg py-2.5 text-sm font-semibold text-white shadow-sm transition-colors ${solidClassName || "bg-indigo-600 hover:bg-indigo-700"}`}>অফিশিয়াল সার্কুলার দেখুন<IconExternal className="h-4 w-4" /></a>;
+}
+function DateBox({ label, value }) {
+  return <div className="rounded-lg bg-slate-50 px-3 py-2.5"><p className="text-[11px] text-slate-400">{label}</p><p className="mt-0.5 text-sm font-semibold text-navy-800">{value ?? "তথ্য প্রকাশিত হয়নি"}</p></div>;
+}
+function UniversityInfoPanel({ university, initialUnitId }) {
+  const today = useToday();
+  const [activeUnitId, setActiveUnitId] = useState(initialUnitId ?? university.units[0]?.id);
+  const activeUnit = university.units.find((u) => u.id === activeUnitId) ?? university.units[0];
+  const category = getCategoryById(university.category);
+  const hasNamedUnits = university.units.some((u) => u.nameBn);
+  const theme = getCategoryTheme(university.category);
+  if (!activeUnit) return null;
+  return (
+    <div className={`rounded-xl border border-slate-200 border-t-4 bg-white p-4 shadow-soft sm:p-6 ${theme.topBorder}`}>
+      <div className="flex flex-wrap items-start justify-between gap-2">
+        <div>
+          {category && <span className={`inline-flex items-center rounded-full border px-2.5 py-0.5 text-[11px] font-medium ${theme.badge}`}>{category.shortNameBn}</span>}
+          <h2 className="mt-2 text-lg font-bold text-navy-900 sm:text-xl">{university.nameBn}</h2>
+          <p className="text-xs text-slate-400">{university.nameEn}</p>
+        </div>
+        <span className="whitespace-nowrap text-xs font-medium text-slate-400">ভর্তি সেশন: {university.admissionSession}</span>
+      </div>
+      {university.introBn && <p className="mt-3 text-sm text-slate-600">{university.introBn}</p>}
+      {hasNamedUnits && university.units.length > 1 && (
+        <div className="mt-4 flex gap-1.5 overflow-x-auto pb-1">
+          {university.units.map((unit) => (
+            <button key={unit.id} onClick={() => setActiveUnitId(unit.id)} className={`shrink-0 whitespace-nowrap rounded-full border px-3 py-1.5 text-xs font-medium ${unit.id === activeUnit.id ? theme.activePill : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50"}`}>{unit.nameBn}</button>
+          ))}
+        </div>
+      )}
+      <div className="mt-5 divide-y divide-slate-200">
+        <InfoSection title="গুরুত্বপূর্ণ তারিখ" isEmpty={false}>
+          <div className="grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <DateBox label="আবেদন শুরু" value={formatBanglaDate(activeUnit.applicationStart)} />
+            <DateBox label="আবেদন শেষ" value={formatBanglaDate(activeUnit.applicationEnd)} />
+            <DateBox label="ভর্তি পরীক্ষা" value={formatBanglaDate(activeUnit.examDate)} />
+          </div>
+          <div className="mt-3 flex flex-wrap items-center gap-2">
+            <StatusBadge unit={activeUnit} today={today} />
+            {activeUnit.examDate && <CountdownBadge unit={activeUnit} today={today} />}
+            {activeUnit.isDemoData && <DemoTag />}
+          </div>
+        </InfoSection>
+        <InfoSection title="আসন সংখ্যা" isEmpty={!activeUnit.seats}>
+          {activeUnit.seats && (
+            <div>
+              {activeUnit.seats.total !== null && <p className="text-sm text-slate-700">মোট আসন: <span className="font-semibold">{toBanglaNumber(activeUnit.seats.total)}</span></p>}
+              {activeUnit.seats.breakdown && activeUnit.seats.breakdown.length > 0 && (
+                <ul className="mt-2 divide-y divide-slate-200 text-sm text-slate-600">
+                  {activeUnit.seats.breakdown.map((b) => <li key={b.nameBn} className="flex justify-between py-1.5"><span>{b.nameBn}</span><span className="font-medium">{toBanglaNumber(b.count)}</span></li>)}
+                </ul>
+              )}
+            </div>
+          )}
+        </InfoSection>
+        <InfoSection title="আবেদন যোগ্যতা" isEmpty={!activeUnit.eligibility?.descriptionBn && !(activeUnit.eligibility?.points?.length)}>
+          {activeUnit.eligibility?.descriptionBn && <p className="text-sm text-slate-700">{activeUnit.eligibility.descriptionBn}</p>}
+          {activeUnit.eligibility?.points && activeUnit.eligibility.points.length > 0 && (
+            <ul className="mt-2 list-inside list-disc space-y-1 text-sm text-slate-600">{activeUnit.eligibility.points.map((p, i) => <li key={i}>{p}</li>)}</ul>
+          )}
+        </InfoSection>
+        <InfoSection title="পরীক্ষার ধরন" isEmpty={!activeUnit.examPattern}><p className="text-sm text-slate-700">{activeUnit.examPattern}</p></InfoSection>
+        <InfoSection title="বিষয় ও প্রশ্নসংখ্যা" isEmpty={activeUnit.subjects.length === 0}>
+          <ul className="divide-y divide-slate-200 text-sm">{activeUnit.subjects.map((s) => <li key={s.nameBn} className="flex items-center justify-between py-1.5"><span className="text-slate-600">{s.nameBn}</span><span className="font-semibold text-navy-800">{toBanglaNumber(s.marks)}</span></li>)}</ul>
+        </InfoSection>
+        <InfoSection title="ফলাফল নির্ণয় পদ্ধতি" isEmpty={!activeUnit.resultMethod}><p className="text-sm text-slate-700">{activeUnit.resultMethod}</p></InfoSection>
+        <div className="pt-4"><h4 className="mb-2 text-sm font-bold text-navy-800">অফিসিয়াল সার্কুলার</h4><CircularButton url={activeUnit.circularUrl} solidClassName={theme.solid} /></div>
+      </div>
+    </div>
+  );
+}
+function InfoTab({ jumpToUniversityId, onConsumeJump }) {
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedUniversityId, setSelectedUniversityId] = useState(null);
+
+  useEffect(() => {
+    if (jumpToUniversityId) {
+      const uni = getUniversityById(jumpToUniversityId);
+      if (uni) { setSelectedCategory(uni.category); setSelectedUniversityId(uni.id); }
+      onConsumeJump();
+    }
+  }, [jumpToUniversityId]);
+
+  const universityList = useMemo(() => (selectedCategory ? getUniversitiesByCategory(selectedCategory) : []), [selectedCategory]);
+  const category = selectedCategory ? getCategoryById(selectedCategory) : null;
+  const selectedUniversity = selectedUniversityId ? getUniversityById(selectedUniversityId) : null;
+  return (
+    <div className="space-y-5">
+      {!selectedCategory ? <CategoryGrid onSelect={setSelectedCategory} /> : !selectedUniversity ? (
+        <React.Fragment>
+          <CategoryPills active={selectedCategory} onSelect={(id) => { setSelectedCategory(id); setSelectedUniversityId(null); }} onBack={() => setSelectedCategory(null)} />
+          <div>
+            <h2 className="mb-3 text-sm font-bold text-navy-900 sm:text-base">{category?.nameBn}</h2>
+            {universityList.length === 0 ? <EmptyState title="এই ক্যাটাগরিতে কোনো তথ্য পাওয়া যায়নি" /> : <UniversityPicker universityList={universityList} onSelect={setSelectedUniversityId} />}
+          </div>
+        </React.Fragment>
+      ) : (
+        <div>
+          <button onClick={() => setSelectedUniversityId(null)} className="mb-4 inline-flex items-center gap-1.5 text-sm font-medium text-indigo-600 hover:text-indigo-800"><IconArrowLeft className="h-4 w-4" />তালিকায় ফিরে যান</button>
+          <UniversityInfoPanel university={selectedUniversity} />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* =========================================================================
+   APP
+   ========================================================================= */
+function App() {
+  const [activeTab, setActiveTab] = useState("overview");
+  const [jumpToUniversityId, setJumpToUniversityId] = useState(null);
+  const openUniversityInInfoTab = (id) => { setJumpToUniversityId(id); setActiveTab("info"); };
+  // Tab switches replace the whole panel below the sticky nav, so always
+  // reset scroll to top — otherwise a switch triggered from far down a long
+  // list (e.g. a table row's "বিস্তারিত" button) leaves new content hidden
+  // underneath the sticky header/tabs bar.
+  useEffect(() => { window.scrollTo(0, 0); }, [activeTab]);
+  return (
+    <div className="flex min-h-screen flex-col">
+      <Header />
+      <MainTabs active={activeTab} onChange={setActiveTab} />
+      <main className="mx-auto w-full max-w-7xl flex-1 px-4 py-5 sm:px-6 sm:py-6">
+        {activeTab === "overview" && <CalendarTab onOpenUniversity={openUniversityInInfoTab} />}
+        {activeTab === "category" && <CategoryTab onOpenUniversity={openUniversityInInfoTab} />}
+        {activeTab === "info" && <InfoTab jumpToUniversityId={jumpToUniversityId} onConsumeJump={() => setJumpToUniversityId(null)} />}
+      </main>
+      <Footer />
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById("root")).render(<App />);
+</script>
+</body>
+</html>
