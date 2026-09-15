@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-bangla: "Hind Siliguri", "Noto Sans Bengali", system-ui, sans-serif;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-bangla);
+  background-color: #f7f9fc;
+  color: #14213d;
+}
+
+/* Sticky table header helper */
+.sticky-thead th {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+/* Custom focus ring for accessibility, consistent with the navy accent */
+:focus-visible {
+  outline: 2px solid #2d5290;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #cbd5e1;
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+/* News-ticker marquee for the urgent-deadline banner */
+@keyframes marquee-scroll {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee-scroll linear infinite;
+}
+
+.marquee-track:hover {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track {
+    animation: none;
+  }
+}
