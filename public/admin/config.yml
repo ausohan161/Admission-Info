@@ -1,0 +1,156 @@
+backend:
+  name: github
+  repo: ausohan161/Admission-Info
+  branch: main
+  # নিচের URL-টি cms-oauth/ ফোল্ডার Cloudflare Pages-এ ডিপ্লয় করার পর পাওয়া
+  # ঠিকানা দিয়ে বদলে দিন (যেমন https://admission-cms-auth.pages.dev)।
+  base_url: https://REPLACE-WITH-YOUR-CLOUDFLARE-PAGES-URL
+  auth_endpoint: auth
+
+publish_mode: simple
+media_folder: "public/uploads"
+public_folder: "/uploads"
+
+locale: "en"
+
+collections:
+  - name: "universities"
+    label: "বিশ্ববিদ্যালয় / প্রতিষ্ঠান"
+    label_singular: "প্রতিষ্ঠান"
+    folder: "src/data/universities"
+    create: true
+    delete: true
+    slug: "{{fields.id}}"
+    format: "json"
+    identifier_field: "nameBn"
+    summary: "{{nameBn}} ({{shortName}}) — {{category}}"
+    sortable_fields: ["nameBn", "category"]
+    fields:
+      - label: "আইডি (ইংরেজি অক্ষর, সংখ্যা ও হাইফেন — একবার সেভ করার পর পরিবর্তন করবেন না)"
+        name: "id"
+        widget: "string"
+        pattern: ["^[a-z0-9-]+$", "শুধু ছোট হাতের ইংরেজি অক্ষর, সংখ্যা ও হাইফেন (-) ব্যবহার করুন, যেমন: buet, du, gst-cluster"]
+        hint: "উদাহরণ: buet, du, gst-cluster"
+
+      - { label: "নাম (বাংলা)", name: "nameBn", widget: "string" }
+      - { label: "নাম (ইংরেজি)", name: "nameEn", widget: "string" }
+      - { label: "সংক্ষিপ্ত নাম (যেমন BUET, DU)", name: "shortName", widget: "string" }
+
+      - label: "ক্যাটাগরি"
+        name: "category"
+        widget: "select"
+        options:
+          - { label: "মেডিকেল অ্যান্ড ডেন্টাল কলেজ", value: "medical" }
+          - { label: "ইঞ্জিনিয়ারিং বিশ্ববিদ্যালয় (স্বতন্ত্র)", value: "engineering-independent" }
+          - { label: "ইঞ্জিনিয়ারিং বিশ্ববিদ্যালয় (গুচ্ছ)", value: "engineering-cluster" }
+          - { label: "সাধারণ বিশ্ববিদ্যালয় (স্বতন্ত্র)", value: "general-independent" }
+          - { label: "সাধারণ বিশ্ববিদ্যালয় (গুচ্ছ)", value: "general-cluster" }
+
+      - label: "সাব-গ্রুপ (ঐচ্ছিক, শুধু মেডিকেল ক্যাটাগরির জন্য)"
+        name: "subGroupBn"
+        widget: "string"
+        required: false
+        hint: "যেমন: আর্মড ফোর্সেস মেডিকেল কলেজ"
+
+      - { label: "ভর্তি সেশন", name: "admissionSession", widget: "string", hint: "যেমন: ২০২৬-২৭" }
+
+      - label: "সংক্ষিপ্ত পরিচিতি (ঐচ্ছিক)"
+        name: "introBn"
+        widget: "text"
+        required: false
+
+      - label: "ভর্তি ইউনিটসমূহ"
+        name: "units"
+        widget: "list"
+        summary: "{{fields.nameBn}} — পরীক্ষা: {{fields.examDate}}"
+        fields:
+          - label: "ইউনিট আইডি (ইংরেজি, ইউনিটের মধ্যে ইউনিক)"
+            name: "id"
+            widget: "string"
+            pattern: ["^[a-z0-9-]+$", "শুধু ছোট হাতের ইংরেজি অক্ষর, সংখ্যা ও হাইফেন"]
+            hint: "একটিমাত্র ইউনিট হলে 'default' লিখুন"
+
+          - label: "ইউনিটের নাম (বাংলা) — একটিমাত্র ইউনিট হলে খালি রাখুন"
+            name: "nameBn"
+            widget: "string"
+            required: false
+
+          - label: "আবেদন শুরুর তারিখ (না জানলে খালি রাখুন)"
+            name: "applicationStart"
+            widget: "datetime"
+            date_format: "YYYY-MM-DD"
+            time_format: false
+            required: false
+
+          - label: "আবেদনের শেষ তারিখ (না জানলে খালি রাখুন)"
+            name: "applicationEnd"
+            widget: "datetime"
+            date_format: "YYYY-MM-DD"
+            time_format: false
+            required: false
+
+          - label: "ভর্তি পরীক্ষার তারিখ (না জানলে খালি রাখুন)"
+            name: "examDate"
+            widget: "datetime"
+            date_format: "YYYY-MM-DD"
+            time_format: false
+            required: false
+
+          - label: "এটি কি নমুনা/ডেমো তারিখ? (official সার্কুলার এলে আনচেক করুন)"
+            name: "isDemoData"
+            widget: "boolean"
+            default: false
+            required: false
+
+          - label: "আসন সংখ্যা (ঐচ্ছিক)"
+            name: "seats"
+            widget: "object"
+            required: false
+            collapsed: true
+            fields:
+              - { label: "মোট আসন", name: "total", widget: "number", value_type: "int", required: false }
+              - label: "বিভাজন (ঐচ্ছিক, যেমন কোটাভিত্তিক)"
+                name: "breakdown"
+                widget: "list"
+                required: false
+                fields:
+                  - { label: "নাম", name: "nameBn", widget: "string" }
+                  - { label: "সংখ্যা", name: "count", widget: "number", value_type: "int" }
+
+          - label: "আবেদন যোগ্যতা (ঐচ্ছিক)"
+            name: "eligibility"
+            widget: "object"
+            required: false
+            collapsed: true
+            fields:
+              - { label: "বিবরণ", name: "descriptionBn", widget: "text", required: false }
+              - label: "পয়েন্ট আকারে যোগ্যতা (ঐচ্ছিক)"
+                name: "points"
+                widget: "list"
+                required: false
+                field: { label: "পয়েন্ট", name: "point", widget: "string" }
+
+          - label: "পরীক্ষার ধরন (ঐচ্ছিক)"
+            name: "examPattern"
+            widget: "string"
+            required: false
+            hint: "যেমন: MCQ, Written, MCQ + Written"
+
+          - label: "বিষয় ও প্রশ্নসংখ্যা (ঐচ্ছিক)"
+            name: "subjects"
+            widget: "list"
+            required: false
+            fields:
+              - { label: "বিষয়ের নাম", name: "nameBn", widget: "string" }
+              - { label: "নম্বর", name: "marks", widget: "number", value_type: "int" }
+
+          - label: "ফলাফল নির্ণয় পদ্ধতি (ঐচ্ছিক)"
+            name: "resultMethod"
+            widget: "string"
+            required: false
+
+          - label: "সার্কুলার লিংক (ঐচ্ছিক)"
+            name: "circularUrl"
+            widget: "string"
+            required: false
+            hint: "সরাসরি PDF বা ওয়েবপেজের লিংক"

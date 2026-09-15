@@ -1,0 +1,25 @@
+{
+  "id": "armed-forces-medical",
+  "nameBn": "আর্মড ফোর্সেস মেডিকেল কলেজ",
+  "nameEn": "Armed Forces Medical College",
+  "shortName": "AFMC",
+  "category": "medical",
+  "subGroupBn": "আর্মড ফোর্সেস মেডিকেল কলেজ",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

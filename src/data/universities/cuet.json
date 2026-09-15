@@ -1,0 +1,24 @@
+{
+  "id": "cuet",
+  "nameBn": "চট্টগ্রাম প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়",
+  "nameEn": "Chittagong University of Engineering & Technology",
+  "shortName": "CUET",
+  "category": "engineering-cluster",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": "2026-08-01",
+      "applicationEnd": "2026-08-25",
+      "examDate": "2026-09-15",
+      "isDemoData": true,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

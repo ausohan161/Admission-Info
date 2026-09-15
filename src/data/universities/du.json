@@ -1,0 +1,66 @@
+{
+  "id": "du",
+  "nameBn": "ঢাকা বিশ্ববিদ্যালয়",
+  "nameEn": "University of Dhaka",
+  "shortName": "DU",
+  "category": "general-independent",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "science",
+      "nameBn": "বিজ্ঞান ইউনিট",
+      "applicationStart": "2026-08-01",
+      "applicationEnd": "2026-09-10",
+      "examDate": "2026-10-05",
+      "isDemoData": true,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    },
+    {
+      "id": "arts",
+      "nameBn": "কলা, আইন ও সামাজিক বিজ্ঞান ইউনিট",
+      "applicationStart": "2026-09-05",
+      "applicationEnd": "2026-09-25",
+      "examDate": "2026-10-20",
+      "isDemoData": true,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    },
+    {
+      "id": "business",
+      "nameBn": "ব্যবসায় শিক্ষা ইউনিট",
+      "applicationStart": "2026-09-20",
+      "applicationEnd": "2026-10-10",
+      "examDate": "2026-11-05",
+      "isDemoData": true,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    },
+    {
+      "id": "fine-arts",
+      "nameBn": "চারুকলা ইউনিট",
+      "applicationStart": "2026-07-01",
+      "applicationEnd": "2026-07-20",
+      "examDate": "2026-08-15",
+      "isDemoData": true,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

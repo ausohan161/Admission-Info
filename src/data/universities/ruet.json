@@ -1,0 +1,24 @@
+{
+  "id": "ruet",
+  "nameBn": "রাজশাহী প্রকৌশল ও প্রযুক্তি বিশ্ববিদ্যালয়",
+  "nameEn": "Rajshahi University of Engineering & Technology",
+  "shortName": "RUET",
+  "category": "engineering-cluster",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

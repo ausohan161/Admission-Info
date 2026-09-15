@@ -1,0 +1,25 @@
+{
+  "id": "army-medical",
+  "nameBn": "আর্মি মেডিকেল কলেজ",
+  "nameEn": "Army Medical College",
+  "shortName": "AMC",
+  "category": "medical",
+  "subGroupBn": "আর্মি মেডিকেল কলেজ",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

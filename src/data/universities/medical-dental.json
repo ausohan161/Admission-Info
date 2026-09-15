@@ -1,0 +1,25 @@
+{
+  "id": "medical-dental",
+  "nameBn": "মেডিকেল ও ডেন্টাল কলেজ",
+  "nameEn": "Medical & Dental College Admission",
+  "shortName": "MBBS/BDS",
+  "category": "medical",
+  "admissionSession": "২০২৬-২৭",
+  "introBn": "সরকারি ও বেসরকারি মেডিকেল এবং ডেন্টাল কলেজে ভর্তি পরীক্ষা।",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": "2026-10-01",
+      "applicationEnd": "2026-10-30",
+      "examDate": "2026-11-20",
+      "isDemoData": true,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

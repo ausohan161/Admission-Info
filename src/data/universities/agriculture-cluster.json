@@ -1,0 +1,25 @@
+{
+  "id": "agriculture-cluster",
+  "nameBn": "কৃষি গুচ্ছ",
+  "nameEn": "Agriculture Cluster",
+  "shortName": "কৃষি গুচ্ছ",
+  "category": "general-cluster",
+  "admissionSession": "২০২৬-২৭",
+  "introBn": "কৃষি বিশ্ববিদ্যালয় গুচ্ছ ভর্তি পরীক্ষা (৯টি বিশ্ববিদ্যালয়)।",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "buet",
+  "nameBn": "বাংলাদেশ প্রকৌশল বিশ্ববিদ্যালয়",
+  "nameEn": "Bangladesh University of Engineering and Technology",
+  "shortName": "BUET",
+  "category": "engineering-independent",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": "2026-09-01",
+      "applicationEnd": "2026-09-15",
+      "examDate": "2026-10-01",
+      "isDemoData": true,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

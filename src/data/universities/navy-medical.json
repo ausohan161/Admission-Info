@@ -1,0 +1,25 @@
+{
+  "id": "navy-medical",
+  "nameBn": "নেভি মেডিকেল কলেজ",
+  "nameEn": "Navy Medical College",
+  "shortName": "NMC",
+  "category": "medical",
+  "subGroupBn": "নেভি মেডিকেল কলেজ",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "id": "ju",
+  "nameBn": "জাহাঙ্গীরনগর বিশ্ববিদ্যালয়",
+  "nameEn": "Jahangirnagar University",
+  "shortName": "JU",
+  "category": "general-independent",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

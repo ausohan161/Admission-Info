@@ -1,0 +1,24 @@
+{
+  "id": "cu",
+  "nameBn": "চট্টগ্রাম বিশ্ববিদ্যালয়",
+  "nameEn": "University of Chittagong",
+  "shortName": "CU",
+  "category": "general-independent",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}

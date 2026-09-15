@@ -1,0 +1,24 @@
+{
+  "id": "iut",
+  "nameBn": "ইসলামিক ইউনিভার্সিটি অব টেকনোলজি",
+  "nameEn": "Islamic University of Technology",
+  "shortName": "IUT",
+  "category": "engineering-independent",
+  "admissionSession": "২০২৬-২৭",
+  "units": [
+    {
+      "id": "default",
+      "nameBn": null,
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": null,
+      "eligibility": null,
+      "examPattern": null,
+      "subjects": [],
+      "resultMethod": null,
+      "circularUrl": null
+    }
+  ]
+}
