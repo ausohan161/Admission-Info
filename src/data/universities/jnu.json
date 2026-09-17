@@ -5,20 +5,82 @@
   "shortName": "JnU",
   "category": "general-independent",
   "admissionSession": "২০২৬-২৭",
+  "introBn": "তথ্যসূত্র: উদ্ভাস-উন্মেষ শিক্ষা পরিবার কর্তৃক প্রকাশিত ২০২৫ সালের ভর্তি বিজ্ঞপ্তি সংকলন — ২০২৬ সালের চূড়ান্ত সার্কুলার প্রকাশিত হলে তারিখসহ সব তথ্য হালনাগাদ করা হবে।",
   "units": [
     {
-      "id": "default",
-      "nameBn": null,
+      "id": "a-unit",
+      "nameBn": "'A' ইউনিট (বিজ্ঞান)",
       "applicationStart": null,
       "applicationEnd": null,
       "examDate": null,
       "isDemoData": false,
-      "seats": null,
-      "eligibility": null,
-      "examPattern": null,
-      "subjects": [],
-      "resultMethod": null,
-      "circularUrl": null
+      "seats": { "total": 840, "breakdown": [] },
+      "eligibility": {
+        "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩.২৫ সহ মোট জিপিএ ৭.৫ পেতে হবে।",
+        "points": []
+      },
+      "examPattern": "৭২ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে না।",
+      "subjects": [
+        { "nameBn": "পদার্থবিজ্ঞান", "marks": 24 },
+        { "nameBn": "রসায়ন", "marks": 24 },
+        { "nameBn": "গণিত/জীববিজ্ঞান", "marks": 24 }
+      ],
+      "resultMethod": "ভর্তি পরীক্ষায় প্রাপ্ত নম্বর + (SSC থেকে ১০ নম্বর + HSC থেকে ১৮ নম্বর)।",
+      "circularUrl": "https://jnu.ac.bd"
+    },
+    {
+      "id": "b-unit",
+      "nameBn": "'B' ইউনিট (কলা ও আইন)",
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": {
+        "total": 1395,
+        "breakdown": [
+          { "nameBn": "কলা ও আইন অনুষদ", "count": 785 },
+          { "nameBn": "সামাজিক বিজ্ঞান অনুষদ", "count": 610 }
+        ]
+      },
+      "eligibility": {
+        "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩ সহ মোট জিপিএ ৬.৫ পেতে হবে।",
+        "points": []
+      },
+      "examPattern": "৭২ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
+      "subjects": [
+        { "nameBn": "বাংলা", "marks": 24 },
+        { "nameBn": "ইংরেজি", "marks": 24 },
+        { "nameBn": "সাধারণ জ্ঞান", "marks": 24 }
+      ],
+      "resultMethod": "ভর্তি পরীক্ষায় প্রাপ্ত নম্বর + (SSC থেকে ১০ নম্বর + HSC থেকে ১৮ নম্বর)।",
+      "circularUrl": "https://jnu.ac.bd"
+    },
+    {
+      "id": "d-unit",
+      "nameBn": "'D' ইউনিট (সামাজিক বিজ্ঞান)",
+      "applicationStart": null,
+      "applicationEnd": null,
+      "examDate": null,
+      "isDemoData": false,
+      "seats": {
+        "total": 1395,
+        "breakdown": [
+          { "nameBn": "কলা ও আইন অনুষদ", "count": 785 },
+          { "nameBn": "সামাজিক বিজ্ঞান অনুষদ", "count": 610 }
+        ]
+      },
+      "eligibility": {
+        "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩ সহ মোট জিপিএ ৬.৫ পেতে হবে।",
+        "points": []
+      },
+      "examPattern": "৭২ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
+      "subjects": [
+        { "nameBn": "বাংলা", "marks": 24 },
+        { "nameBn": "ইংরেজি", "marks": 24 },
+        { "nameBn": "গাণিতিক বুদ্ধিমত্তা ও সাধারণ জ্ঞান", "marks": 24 }
+      ],
+      "resultMethod": "ভর্তি পরীক্ষায় প্রাপ্ত নম্বর + (SSC থেকে ১০ নম্বর + HSC থেকে ১৮ নম্বর)।",
+      "circularUrl": "https://jnu.ac.bd"
     }
   ]
 }
