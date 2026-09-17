@@ -1,10 +1,11 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { CalendarRange } from "lucide-react";
 import { universities } from "@/data/universities";
 import { CategoryId } from "@/data/types";
 import { flattenUnits } from "@/lib/flatten";
-import { filterByStatus, searchRows, sortRows, SortKey, StatusFilter } from "@/lib/filters";
+import { filterByStatus, searchRows, sortRows, StatusFilter } from "@/lib/filters";
 import { computeSummaryStats, getUrgentDeadlines, getUpcomingExams } from "@/lib/summary";
 import { useToday } from "@/lib/useToday";
 import { SummaryStatsBar } from "./SummaryStats";
@@ -20,7 +21,6 @@ export function CalendarTab() {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState<CategoryId | "all">("all");
   const [status, setStatus] = useState<StatusFilter>("all");
-  const [sort, setSort] = useState<SortKey>("nearest-exam");
 
   const allRows = useMemo(() => flattenUnits(universities), []);
   const stats = useMemo(() => computeSummaryStats(universities, allRows, today), [allRows, today]);
@@ -32,9 +32,10 @@ export function CalendarTab() {
     if (category !== "all") rows = rows.filter((r) => r.university.category === category);
     rows = filterByStatus(rows, status, today);
     rows = searchRows(rows, query);
-    rows = sortRows(rows, sort, today);
+    // Fixed default ordering — soonest exam first — no user-facing sort control.
+    rows = sortRows(rows, "nearest-exam", today);
     return rows;
-  }, [allRows, category, status, query, sort, today]);
+  }, [allRows, category, status, query, today]);
 
   return (
     <div className="space-y-5" id="panel-overview" role="tabpanel" aria-labelledby="tab-overview">
@@ -45,7 +46,8 @@ export function CalendarTab() {
       <UpcomingTests rows={upcomingExams} today={today} />
 
       <section>
-        <h2 className="mb-3 text-sm font-bold text-navy-900 sm:text-base">
+        <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-indigo-700 sm:text-base">
+          <CalendarRange className="h-4 w-4" />
           সকল বিশ্ববিদ্যালয়ের ভর্তি সময়সূচি
         </h2>
         <TableToolbar
@@ -55,8 +57,6 @@ export function CalendarTab() {
           onCategoryChange={setCategory}
           status={status}
           onStatusChange={setStatus}
-          sort={sort}
-          onSortChange={setSort}
         />
 
         <div className="mt-4">

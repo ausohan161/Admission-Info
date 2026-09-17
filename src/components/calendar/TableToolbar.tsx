@@ -3,7 +3,7 @@
 import { Search } from "lucide-react";
 import { categories } from "@/data/categories";
 import { CategoryId } from "@/data/types";
-import { SortKey, StatusFilter } from "@/lib/filters";
+import { StatusFilter } from "@/lib/filters";
 
 const STATUS_OPTIONS: { value: StatusFilter; labelBn: string }[] = [
   { value: "all", labelBn: "সব অবস্থা" },
@@ -13,12 +13,6 @@ const STATUS_OPTIONS: { value: StatusFilter; labelBn: string }[] = [
   { value: "completed", labelBn: "পরীক্ষা সম্পন্ন" },
 ];
 
-const SORT_OPTIONS: { value: SortKey; labelBn: string }[] = [
-  { value: "nearest-exam", labelBn: "নিকটতম পরীক্ষা" },
-  { value: "application-deadline", labelBn: "আবেদন শেষ" },
-  { value: "name", labelBn: "বিশ্ববিদ্যালয়ের নাম" },
-];
-
 interface Props {
   query: string;
   onQueryChange: (v: string) => void;
@@ -26,8 +20,6 @@ interface Props {
   onCategoryChange: (v: CategoryId | "all") => void;
   status: StatusFilter;
   onStatusChange: (v: StatusFilter) => void;
-  sort: SortKey;
-  onSortChange: (v: SortKey) => void;
 }
 
 const selectClass =
@@ -40,8 +32,6 @@ export function TableToolbar({
   onCategoryChange,
   status,
   onStatusChange,
-  sort,
-  onSortChange,
 }: Props) {
   return (
     <div className="space-y-3">
@@ -57,7 +47,7 @@ export function TableToolbar({
         />
       </div>
 
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <select
           aria-label="ক্যাটাগরি ফিল্টার"
           className={selectClass}
@@ -79,19 +69,6 @@ export function TableToolbar({
           onChange={(e) => onStatusChange(e.target.value as StatusFilter)}
         >
           {STATUS_OPTIONS.map((s) => (
-            <option key={s.value} value={s.value}>
-              {s.labelBn}
-            </option>
-          ))}
-        </select>
-
-        <select
-          aria-label="সাজানোর ক্রম"
-          className={selectClass}
-          value={sort}
-          onChange={(e) => onSortChange(e.target.value as SortKey)}
-        >
-          {SORT_OPTIONS.map((s) => (
             <option key={s.value} value={s.value}>
               {s.labelBn}
             </option>

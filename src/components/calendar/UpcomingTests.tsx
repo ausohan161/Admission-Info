@@ -8,7 +8,7 @@ import { toBanglaNumber } from "@/lib/bangla";
 export function UpcomingTests({ rows, today }: { rows: FlatUnitRow[]; today: string }) {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
-      <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-navy-900 sm:text-base">
+      <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-violet-700 sm:text-base">
         <Sparkles className="h-4 w-4 text-violet-500" aria-hidden />
         সামনে যেসব ভর্তি পরীক্ষা
       </h2>
