@@ -453,7 +453,7 @@ function DeadlineTicker({ rows, today }) {
 function UpcomingTests({ rows, today }) {
   return (
     <section className="rounded-xl border border-slate-200 bg-white p-4 shadow-soft sm:p-5">
-      <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-navy-900 sm:text-base"><IconSparkles className="h-4 w-4 text-violet-500" />সামনে যেসব ভর্তি পরীক্ষা</h2>
+      <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-violet-700 sm:text-base"><IconSparkles className="h-4 w-4 text-violet-500" />সামনে যেসব ভর্তি পরীক্ষা</h2>
       {rows.length === 0 ? (
         <EmptyState title="আসন্ন কোনো ভর্তি পরীক্ষার তথ্য প্রকাশিত হয়নি" description="সার্কুলার প্রকাশিত হলে তথ্য এখানে আপডেট করা হবে।" />
       ) : (
@@ -479,11 +479,8 @@ const STATUS_OPTIONS = [
   { value: "all", labelBn: "সব অবস্থা" }, { value: "ongoing", labelBn: "আবেদন চলছে" },
   { value: "closed", labelBn: "আবেদন শেষ" }, { value: "upcoming-exam", labelBn: "পরীক্ষা আসন্ন" }, { value: "completed", labelBn: "পরীক্ষা সম্পন্ন" },
 ];
-const SORT_OPTIONS = [
-  { value: "nearest-exam", labelBn: "নিকটতম পরীক্ষা" }, { value: "application-deadline", labelBn: "আবেদন শেষ" }, { value: "name", labelBn: "বিশ্ববিদ্যালয়ের নাম" },
-];
 const selectClass = "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 sm:text-sm";
-function TableToolbar({ query, onQueryChange, category, onCategoryChange, status, onStatusChange, sort, onSortChange }) {
+function TableToolbar({ query, onQueryChange, category, onCategoryChange, status, onStatusChange }) {
   return (
     <div className="space-y-3">
       <div className="relative">
@@ -492,16 +489,13 @@ function TableToolbar({ query, onQueryChange, category, onCategoryChange, status
           placeholder="বিশ্ববিদ্যালয়ের নাম বা সংক্ষিপ্ত রূপ দিয়ে খুঁজুন — যেমন BUET, ঢাকা বিশ্ববিদ্যালয়, GST"
           className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100" />
       </div>
-      <div className="grid grid-cols-3 gap-2">
+      <div className="grid grid-cols-2 gap-2">
         <select className={selectClass} value={category} onChange={(e) => onCategoryChange(e.target.value)}>
           <option value="all">সব ক্যাটাগরি</option>
           {categories.map((c) => <option key={c.id} value={c.id}>{c.shortNameBn}</option>)}
         </select>
         <select className={selectClass} value={status} onChange={(e) => onStatusChange(e.target.value)}>
           {STATUS_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.labelBn}</option>)}
-        </select>
-        <select className={selectClass} value={sort} onChange={(e) => onSortChange(e.target.value)}>
-          {SORT_OPTIONS.map((s) => <option key={s.value} value={s.value}>{s.labelBn}</option>)}
         </select>
       </div>
     </div>
@@ -576,7 +570,6 @@ function CalendarTab({ onOpenUniversity }) {
   const [query, setQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
-  const [sort, setSort] = useState("nearest-exam");
   const allRows = useMemo(() => flattenUnits(universities), []);
   const stats = useMemo(() => computeSummaryStats(universities, allRows, today), [allRows, today]);
   const upcomingExams = useMemo(() => getUpcomingExams(allRows, today, 5), [allRows, today]);
@@ -586,17 +579,17 @@ function CalendarTab({ onOpenUniversity }) {
     if (category !== "all") rows = rows.filter((r) => r.university.category === category);
     rows = filterByStatus(rows, status, today);
     rows = searchRows(rows, query);
-    rows = sortRows(rows, sort, today);
+    rows = sortRows(rows, "nearest-exam", today);
     return rows;
-  }, [allRows, category, status, query, sort, today]);
+  }, [allRows, category, status, query, today]);
   return (
     <div className="space-y-5">
       <SummaryStatsBar stats={stats} />
       <DeadlineTicker rows={urgentDeadlines} today={today} />
       <UpcomingTests rows={upcomingExams} today={today} />
       <section>
-        <h2 className="mb-3 text-sm font-bold text-navy-900 sm:text-base">সকল বিশ্ববিদ্যালয়ের ভর্তি সময়সূচি</h2>
-        <TableToolbar query={query} onQueryChange={setQuery} category={category} onCategoryChange={setCategory} status={status} onStatusChange={setStatus} sort={sort} onSortChange={setSort} />
+        <h2 className="mb-3 flex items-center gap-1.5 text-sm font-bold text-indigo-700 sm:text-base"><IconCalendarDays className="h-4 w-4" />সকল বিশ্ববিদ্যালয়ের ভর্তি সময়সূচি</h2>
+        <TableToolbar query={query} onQueryChange={setQuery} category={category} onCategoryChange={setCategory} status={status} onStatusChange={setStatus} />
         <div className="mt-4">
           {visibleRows.length === 0 ? <EmptyState title="কোনো ফলাফল পাওয়া যায়নি" description="অনুসন্ধান বা ফিল্টার পরিবর্তন করে আবার চেষ্টা করুন।" /> : (
             <React.Fragment><AdmissionTable rows={visibleRows} today={today} onOpen={onOpenUniversity} /><AdmissionMobileList rows={visibleRows} today={today} onOpen={onOpenUniversity} /></React.Fragment>
