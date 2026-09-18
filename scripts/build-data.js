@@ -40,6 +40,30 @@ function normalizeEligibility(eligibility) {
   return { descriptionBn, points };
 }
 
+function normalizeEligibilityCriteria(criteria) {
+  if (!criteria) return null;
+  const group = ["science", "commerce", "arts", "any"].includes(criteria.group) ? criteria.group : "any";
+  const subjectMinimums = Array.isArray(criteria.subjectMinimums)
+    ? criteria.subjectMinimums
+        .filter((s) => s && normalizeStringOrNull(s.subjectBn) && typeof s.minGpa === "number")
+        .map((s) => ({ subjectBn: s.subjectBn.trim(), minGpa: s.minGpa }))
+    : [];
+  const g = criteria.subjectGroupMinTotal;
+  const subjectGroupMinTotal =
+    g && Array.isArray(g.subjectsBn) && g.subjectsBn.length > 0 && typeof g.minTotal === "number"
+      ? { subjectsBn: g.subjectsBn.map((s) => String(s).trim()), minTotal: g.minTotal }
+      : null;
+  return {
+    group,
+    minSscGpa: typeof criteria.minSscGpa === "number" ? criteria.minSscGpa : null,
+    minHscGpa: typeof criteria.minHscGpa === "number" ? criteria.minHscGpa : null,
+    minCombinedGpa: typeof criteria.minCombinedGpa === "number" ? criteria.minCombinedGpa : null,
+    subjectMinimums,
+    subjectGroupMinTotal,
+    noteBn: normalizeStringOrNull(criteria.noteBn),
+  };
+}
+
 function normalizeUnit(unit) {
   return {
     id: unit.id,
@@ -50,6 +74,7 @@ function normalizeUnit(unit) {
     isDemoData: !!unit.isDemoData,
     seats: normalizeSeats(unit.seats),
     eligibility: normalizeEligibility(unit.eligibility),
+    eligibilityCriteria: normalizeEligibilityCriteria(unit.eligibilityCriteria),
     examPattern: normalizeStringOrNull(unit.examPattern),
     subjects: Array.isArray(unit.subjects)
       ? unit.subjects

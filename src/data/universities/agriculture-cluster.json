@@ -19,6 +19,14 @@
         "descriptionBn": "SSC ও HSC-তে জীববিজ্ঞান, রসায়ন, পদার্থবিজ্ঞান ও গণিত বিষয়সহ উত্তীর্ণ হতে হবে। SSC ও HSC প্রতিটিতে (৪র্থ বিষয় ব্যতীত) ন্যূনতম জিপিএ ৪ এবং সর্বমোট SSC+HSC ন্যূনতম জিপিএ ৮.৫০ থাকতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 4,
+        "minHscGpa": 4,
+        "minCombinedGpa": 8.5,
+        "subjectMinimums": [],
+        "noteBn": "SSC ও HSC-তে জীববিজ্ঞান, রসায়ন, পদার্থবিজ্ঞান ও গণিত বিষয়ে উত্তীর্ণ থাকতে হবে।"
+      },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে না।",
       "subjects": [
         { "nameBn": "গণিত", "marks": 20 },

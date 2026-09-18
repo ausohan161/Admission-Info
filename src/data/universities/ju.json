@@ -25,6 +25,14 @@
         "descriptionBn": "SSC ও HSC মিলিয়ে মোট জিপিএ ৮.৫০ (প্রতিটিতে পৃথকভাবে ন্যূনতম জিপিএ ৪ থাকতে হবে)।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 4,
+        "minHscGpa": 4,
+        "minCombinedGpa": 8.5,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "৮০ নম্বরের MCQ পরীক্ষা, সময় ৫৫ মিনিট। ক্যালকুলেটর ব্যবহার করা যাবে না।",
       "subjects": [
         { "nameBn": "গণিত", "marks": 22 },
@@ -53,6 +61,14 @@
       "eligibility": {
         "descriptionBn": "SSC ও HSC মিলিয়ে মোট জিপিএ ৯ (প্রতিটিতে পৃথকভাবে ন্যূনতম জিপিএ ৪ থাকতে হবে)।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 4,
+        "minHscGpa": 4,
+        "minCombinedGpa": 9,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "৮০ নম্বরের MCQ পরীক্ষা, সময় ৫৫ মিনিট। ক্যালকুলেটর ব্যবহার করা যাবে না।",
       "subjects": [
@@ -84,6 +100,14 @@
         "descriptionBn": "মানবিক ও ব্যবসায় শিক্ষা শাখার জন্য SSC + HSC মোট জিপিএ ৭.৫ থাকতে হবে (প্রতিটিতে পৃথকভাবে ন্যূনতম জিপিএ ৩.৫)।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3.5,
+        "minHscGpa": 3.5,
+        "minCombinedGpa": 7.5,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "৮০ নম্বরের MCQ পরীক্ষা, সময় ৫৫ মিনিট।",
       "subjects": [
         { "nameBn": "বাংলা", "marks": 20 },
@@ -113,6 +137,14 @@
         "descriptionBn": "মানবিক ও ব্যবসায় শিক্ষা শাখার জন্য SSC + HSC মোট জিপিএ ৭.৫ থাকতে হবে (প্রতিটিতে পৃথকভাবে ন্যূনতম জিপিএ ৩.৫)।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3.5,
+        "minHscGpa": 3.5,
+        "minCombinedGpa": 7.5,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "৮০ নম্বরের MCQ পরীক্ষা, সময় ৫৫ মিনিট।",
       "subjects": [
         { "nameBn": "বাংলা", "marks": 20 },
@@ -133,6 +165,14 @@
       "eligibility": {
         "descriptionBn": "মানবিক ও ব্যবসায় শিক্ষা শাখার জন্য SSC + HSC মোট জিপিএ ৭.৫ থাকতে হবে (প্রতিটিতে পৃথকভাবে ন্যূনতম জিপিএ ৩.৫)।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3.5,
+        "minHscGpa": 3.5,
+        "minCombinedGpa": 7.5,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "৮০ নম্বরের MCQ পরীক্ষা, সময় ৫৫ মিনিট।",
       "subjects": [

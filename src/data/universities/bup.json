@@ -19,6 +19,19 @@
         "descriptionBn": "SSC + HSC ন্যূনতম জিপিএ ৮ থাকতে হবে। HSC-তে পদার্থবিজ্ঞান, রসায়ন ও জীববিজ্ঞানে A গ্রেড এবং ইংরেজিতে ন্যূনতম A- গ্রেড থাকতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": null,
+        "minHscGpa": null,
+        "minCombinedGpa": 8,
+        "subjectMinimums": [
+          { "subjectBn": "পদার্থবিজ্ঞান", "minGpa": 4 },
+          { "subjectBn": "রসায়ন", "minGpa": 4 },
+          { "subjectBn": "জীববিজ্ঞান", "minGpa": 4 },
+          { "subjectBn": "ইংরেজি", "minGpa": 3.5 }
+        ],
+        "noteBn": null
+      },
       "examPattern": "৬০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে।",
       "subjects": [
         { "nameBn": "গণিত, জীববিজ্ঞান, পদার্থবিজ্ঞান, রসায়ন — ৪টি থেকে যেকোনো ৩টি (প্রতিটি ২০)", "marks": 60 }
@@ -43,6 +56,14 @@
       "eligibility": {
         "descriptionBn": "SSC + HSC ন্যূনতম জিপিএ ৭.৫ থেকে ৮ থাকতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": null,
+        "minHscGpa": null,
+        "minCombinedGpa": 7.5,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [
@@ -70,6 +91,14 @@
       "eligibility": {
         "descriptionBn": "SSC + HSC ন্যূনতম জিপিএ ৮ থেকে ৮.৫ থাকতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": null,
+        "minHscGpa": null,
+        "minCombinedGpa": 8,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [

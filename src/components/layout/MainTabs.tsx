@@ -1,13 +1,13 @@
 "use client";
 
-import { LayoutGrid, ListTree, BookOpenText } from "lucide-react";
+import { LayoutGrid, BookOpenText, ClipboardCheck } from "lucide-react";
 
-export type MainTabId = "overview" | "category" | "info";
+export type MainTabId = "overview" | "info" | "eligibility";
 
 const TABS: { id: MainTabId; labelBn: string; icon: React.ElementType }[] = [
   { id: "overview", labelBn: "একনজরে অ্যাডমিশন ক্যালেন্ডার", icon: LayoutGrid },
-  { id: "category", labelBn: "ক্যাটাগরি অনুযায়ী অ্যাডমিশন ক্যালেন্ডার", icon: ListTree },
   { id: "info", labelBn: "অ্যাডমিশন তথ্যকণিকা", icon: BookOpenText },
+  { id: "eligibility", labelBn: "আবেদনযোগ্যতা চেকার", icon: ClipboardCheck },
 ];
 
 export function MainTabs({

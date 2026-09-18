@@ -19,6 +19,19 @@
         "descriptionBn": "SSC-তে (৪র্থ বিষয় বাদে) ন্যূনতম জিপি ৪ থাকতে হবে। HSC-তে গণিত, পদার্থবিজ্ঞান, রসায়ন প্রতিটিতে ন্যূনতম জিপি ৪ এবং ইংরেজিসহ এই ৪টি বিষয়ে মোট জিপি ১৮ থাকতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 4,
+        "minHscGpa": null,
+        "minCombinedGpa": null,
+        "subjectMinimums": [
+          { "subjectBn": "উচ্চতর গণিত", "minGpa": 4 },
+          { "subjectBn": "পদার্থবিজ্ঞান", "minGpa": 4 },
+          { "subjectBn": "রসায়ন", "minGpa": 4 }
+        ],
+        "subjectGroupMinTotal": { "subjectsBn": ["উচ্চতর গণিত", "পদার্থবিজ্ঞান", "রসায়ন", "ইংরেজি"], "minTotal": 18 },
+        "noteBn": null
+      },
       "examPattern": "২০০ নম্বরের লিখিত পরীক্ষা, সময় ৩ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে।",
       "subjects": [
         { "nameBn": "গণিত", "marks": 80 },
@@ -40,6 +53,19 @@
       "eligibility": {
         "descriptionBn": "SSC-তে (৪র্থ বিষয় বাদে) ন্যূনতম জিপি ৪ থাকতে হবে। HSC-তে গণিত, পদার্থবিজ্ঞান, রসায়ন প্রতিটিতে ন্যূনতম জিপি ৪ এবং ইংরেজিসহ এই ৪টি বিষয়ে মোট জিপি ১৮ থাকতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 4,
+        "minHscGpa": null,
+        "minCombinedGpa": null,
+        "subjectMinimums": [
+          { "subjectBn": "উচ্চতর গণিত", "minGpa": 4 },
+          { "subjectBn": "পদার্থবিজ্ঞান", "minGpa": 4 },
+          { "subjectBn": "রসায়ন", "minGpa": 4 }
+        ],
+        "subjectGroupMinTotal": { "subjectsBn": ["উচ্চতর গণিত", "পদার্থবিজ্ঞান", "রসায়ন", "ইংরেজি"], "minTotal": 18 },
+        "noteBn": null
       },
       "examPattern": "আর্কিটেকচার ২০০ নম্বর (লিখিত), সময় ২ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে।",
       "subjects": [

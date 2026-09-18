@@ -19,6 +19,14 @@
         "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩.২৫ সহ মোট জিপিএ ৭.৫ পেতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 3.25,
+        "minHscGpa": 3.25,
+        "minCombinedGpa": 7.5,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "৭২ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে না।",
       "subjects": [
         { "nameBn": "পদার্থবিজ্ঞান", "marks": 24 },
@@ -46,6 +54,14 @@
         "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩ সহ মোট জিপিএ ৬.৫ পেতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3,
+        "minHscGpa": 3,
+        "minCombinedGpa": 6.5,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "৭২ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [
         { "nameBn": "বাংলা", "marks": 24 },
@@ -72,6 +88,14 @@
       "eligibility": {
         "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩ সহ মোট জিপিএ ৬.৫ পেতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3,
+        "minHscGpa": 3,
+        "minCombinedGpa": 6.5,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "৭২ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [

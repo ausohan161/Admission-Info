@@ -19,6 +19,14 @@
         "descriptionBn": "SSC + HSC (৪র্থ বিষয়সহ) ন্যূনতম জিপিএ ৮ থাকতে হবে (SSC-তে ন্যূনতম জিপিএ ৪ এবং HSC-তে ন্যূনতম জিপিএ ৩ থাকতে হবে)।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 4,
+        "minHscGpa": 3,
+        "minCombinedGpa": 8,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে।",
       "subjects": [
         { "nameBn": "ইংরেজি", "marks": 25 },
@@ -46,6 +54,14 @@
         "descriptionBn": "B, B1 ও B2 ইউনিট: SSC-তে ন্যূনতম জিপিএ ৩ ও HSC-তে ন্যূনতম জিপিএ ২.৫ (৪র্থ বিষয়সহ) সহ মোট জিপিএ ৬.৫ পেতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3,
+        "minHscGpa": 2.5,
+        "minCombinedGpa": 6.5,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [
         { "nameBn": "বাংলা/ঐচ্ছিক ইংরেজি", "marks": 30 },
@@ -67,6 +83,14 @@
         "descriptionBn": "B, B1 ও B2 ইউনিট: SSC-তে ন্যূনতম জিপিএ ৩ ও HSC-তে ন্যূনতম জিপিএ ২.৫ (৪র্থ বিষয়সহ) সহ মোট জিপিএ ৬.৫ পেতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3,
+        "minHscGpa": 2.5,
+        "minCombinedGpa": 6.5,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [
         { "nameBn": "বাংলা/ঐচ্ছিক ইংরেজি", "marks": 25 },
@@ -87,6 +111,14 @@
       "eligibility": {
         "descriptionBn": "B, B1 ও B2 ইউনিট: SSC-তে ন্যূনতম জিপিএ ৩ ও HSC-তে ন্যূনতম জিপিএ ২.৫ (৪র্থ বিষয়সহ) সহ মোট জিপিএ ৬.৫ পেতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3,
+        "minHscGpa": 2.5,
+        "minCombinedGpa": 6.5,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা। আরবি, ইসলামিক স্টাডিজ ও পালি এবং সাধারণ জ্ঞান — এই বিষয়গুলো থেকে যেকোনো দুটির উত্তর দিতে হবে।",
         "subjects": [
@@ -115,6 +147,14 @@
       "eligibility": {
         "descriptionBn": "D ইউনিট: SSC-তে ন্যূনতম জিপিএ ৩.৫ ও HSC-তে ন্যূনতম জিপিএ ৩ (৪র্থ বিষয়সহ) সহ মোট জিপিএ ৭.৫ পেতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3.5,
+        "minHscGpa": 3,
+        "minCombinedGpa": 7.5,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [

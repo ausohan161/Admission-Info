@@ -19,6 +19,19 @@
         "descriptionBn": "SSC এবং HSC উভয়ে ন্যূনতম জিপিএ ৪.৫ থাকতে হবে। HSC-তে পদার্থবিজ্ঞান, রসায়ন ও গণিত প্রতিটিতে A+ এবং ইংরেজিতে কমপক্ষে A পেতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 4.5,
+        "minHscGpa": 4.5,
+        "minCombinedGpa": null,
+        "subjectMinimums": [
+          { "subjectBn": "পদার্থবিজ্ঞান", "minGpa": 5 },
+          { "subjectBn": "রসায়ন", "minGpa": 5 },
+          { "subjectBn": "উচ্চতর গণিত", "minGpa": 5 },
+          { "subjectBn": "ইংরেজি", "minGpa": 4 }
+        ],
+        "noteBn": null
+      },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ২ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে।",
       "subjects": [
         { "nameBn": "গণিত (BSc Engg ও BBA)", "marks": 35 },

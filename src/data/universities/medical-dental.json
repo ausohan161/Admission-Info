@@ -25,6 +25,14 @@
         "descriptionBn": "SSC ও HSC মিলিয়ে ন্যূনতম জিপিএ ৮.৫ থাকতে হবে (HSC পরীক্ষায় জীববিজ্ঞানে জিপিএ ৩.৫ এর কম নয়)।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": null,
+        "minHscGpa": null,
+        "minCombinedGpa": 8.5,
+        "subjectMinimums": [{ "subjectBn": "জীববিজ্ঞান", "minGpa": 3.5 }],
+        "noteBn": "উপজাতি/প্রতিবন্ধী কোটাসহ কিছু ক্ষেত্রে সর্বমোট জিপিএ ৮ পর্যন্ত শিথিলযোগ্য — নির্দিষ্ট সার্কুলারে যাচাই করুন।"
+      },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা ১৫ মিনিট। পাশ নম্বর ৪০। ক্যালকুলেটর ব্যবহার করা যাবে না।",
       "subjects": [
         { "nameBn": "জীববিজ্ঞান", "marks": 30 },

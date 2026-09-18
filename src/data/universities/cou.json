@@ -19,6 +19,14 @@
         "descriptionBn": "SSC ও HSC (৪র্থ বিষয়সহ) ন্যূনতম জিপিএ ৩ সহ সর্বমোট জিপিএ ৭ থাকতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 3,
+        "minHscGpa": 3,
+        "minCombinedGpa": 7,
+        "subjectMinimums": [],
+        "noteBn": null
+      },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে না।",
       "subjects": [
         { "nameBn": "পদার্থবিজ্ঞান", "marks": 25 },
@@ -39,6 +47,14 @@
       "eligibility": {
         "descriptionBn": "SSC ও HSC-তে ৪র্থ বিষয়সহ ন্যূনতম জিপিএ ৩ এবং মানবিক শাখায় সর্বমোট জিপিএ ৬ থাকতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3,
+        "minHscGpa": 3,
+        "minCombinedGpa": 6,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "১০০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা।",
       "subjects": [

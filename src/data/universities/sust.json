@@ -19,6 +19,14 @@
         "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩ সহ মোট জিপিএ ৬.৫ পেতে হবে। HSC/সমমান পরীক্ষায় গণিতে ন্যূনতম জিপিএ ৩ থাকতে হবে।",
         "points": []
       },
+      "eligibilityCriteria": {
+        "group": "science",
+        "minSscGpa": 3,
+        "minHscGpa": 3,
+        "minCombinedGpa": 6.5,
+        "subjectMinimums": [{ "subjectBn": "উচ্চতর গণিত", "minGpa": 3 }],
+        "noteBn": null
+      },
       "examPattern": "Group-1 (A1): ৮০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা ৩০ মিনিট। Group-2 (A2): আর্কিটেকচার ৩০ নম্বর, সময় ১ ঘণ্টা। ক্যালকুলেটর ব্যবহার করা যাবে।",
       "subjects": [
         { "nameBn": "আবশ্যিক — পদার্থবিজ্ঞান", "marks": 20 },
@@ -41,6 +49,14 @@
       "eligibility": {
         "descriptionBn": "SSC ও HSC-তে ন্যূনতম জিপিএ ৩ সহ মোট জিপিএ ৬ পেতে হবে।",
         "points": []
+      },
+      "eligibilityCriteria": {
+        "group": "any",
+        "minSscGpa": 3,
+        "minHscGpa": 3,
+        "minCombinedGpa": 6,
+        "subjectMinimums": [],
+        "noteBn": null
       },
       "examPattern": "৮০ নম্বরের MCQ পরীক্ষা, সময় ১ ঘণ্টা ৩০ মিনিট।",
       "subjects": [
