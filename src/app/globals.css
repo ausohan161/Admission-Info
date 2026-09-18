@@ -8,12 +8,19 @@
 
 html {
   scroll-behavior: smooth;
+  /* Bumps every rem-based Tailwind text/spacing size up proportionally
+     (browser default is 16px) for clearer, easier-to-read text site-wide. */
+  font-size: 17px;
 }
 
 body {
   font-family: var(--font-bangla);
   background-color: #f7f9fc;
   color: #14213d;
+  /* Slightly bolder baseline than the browser default (400) so plain text
+     without an explicit Tailwind font-weight utility reads more clearly;
+     elements with font-semibold/font-bold remain visibly heavier still. */
+  font-weight: 500;
 }
 
 /* Sticky table header helper */
