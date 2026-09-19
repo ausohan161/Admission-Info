@@ -23,13 +23,6 @@ body {
   font-weight: 500;
 }
 
-/* Sticky table header helper */
-.sticky-thead th {
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
 /* Custom focus ring for accessibility, consistent with the navy accent */
 :focus-visible {
   outline: 2px solid #2d5290;

@@ -9,13 +9,10 @@ import { getCategoryTheme } from "@/lib/categoryTheme";
 
 export function AdmissionTable({ rows, today }: { rows: FlatUnitRow[]; today: string }) {
   return (
-    <div className="hidden max-h-[75vh] overflow-auto rounded-xl border border-slate-200 bg-white shadow-soft sm:block">
+    <div className="hidden overflow-x-auto rounded-xl border border-slate-200 bg-white shadow-soft sm:block">
       <table className="w-full min-w-[960px] border-collapse text-left text-sm">
-        <thead className="sticky-thead">
+        <thead>
           <tr className="text-xs font-semibold uppercase tracking-wide text-white">
-            {/* Background is set per-<th> (not on <tr>) so it paints correctly while each
-                cell is independently `position: sticky` during vertical scroll. A gradient
-                is avoided here since it would restart within each cell and look banded. */}
             <th className="whitespace-nowrap border border-indigo-500 bg-indigo-700 px-3 py-3">ক্রম</th>
             <th className="whitespace-nowrap border border-indigo-500 bg-indigo-700 px-3 py-3">ক্যাটাগরি</th>
             <th className="whitespace-nowrap border border-indigo-500 bg-indigo-700 px-3 py-3">বিশ্ববিদ্যালয়</th>

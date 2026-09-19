@@ -11,6 +11,13 @@ export interface EligibilityInput {
   hscGpa: number;
   /** Only the subjects the student filled in; missing ones are treated as unknown, not zero. */
   subjectGpas: Partial<Record<CheckerSubject, number>>;
+  /** Collected because most real circulars restrict eligibility to specific passing-year
+   * batches — but no official per-university passing-year window has been published for
+   * this admission cycle yet, so these are NOT used to filter results below. Once that
+   * data is added to `EligibilityCriteria`, wire it in here instead of ignoring it. */
+  sscYear: number;
+  hscYear: number;
+  mobileNumber: string;
 }
 
 /** Whether a single unit's criteria are satisfied by the given input.

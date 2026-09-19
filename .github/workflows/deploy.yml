@@ -38,3 +38,10 @@ jobs:
           server-dir: ${{ secrets.FTP_SERVER_DIR }}
           local-dir: ./out/
           protocol: ftps
+          # dates.json সার্ভারে সরাসরি (cPanel/File Manager থেকে) এডিট করা হয় — তাই
+          # ডিপ্লয়ে এটি ওভাররাইট বা ডিলিট হবে না।
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/node_modules/**
+            dates.json

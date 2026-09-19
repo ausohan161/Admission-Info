@@ -1,4 +1,4 @@
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, LayoutGrid } from "lucide-react";
 import { categories } from "@/data/categories";
 import { CategoryId } from "@/data/types";
 import { getUniversitiesByCategory } from "@/data/universities";
@@ -7,12 +7,17 @@ import { getCategoryTheme } from "@/lib/categoryTheme";
 
 export function CategoryGrid({ onSelect }: { onSelect: (id: CategoryId) => void }) {
   return (
-    <div>
-      <h2 className="mb-1 text-sm font-bold text-navy-900 sm:text-base">ক্যাটাগরি বেছে নিন</h2>
-      <p className="mb-4 text-xs text-slate-500 sm:text-sm">
-        একটি ক্যাটাগরিতে ক্লিক করে সংশ্লিষ্ট বিশ্ববিদ্যালয়সমূহের ভর্তি তথ্য দেখুন।
-      </p>
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+    <div className="overflow-hidden rounded-xl border border-slate-200 bg-white shadow-soft">
+      <div className="bg-teal-600 px-4 py-4 sm:px-6">
+        <h2 className="flex items-center gap-2 text-lg font-extrabold text-white sm:text-xl">
+          <LayoutGrid className="h-5 w-5" aria-hidden />
+          ক্যাটাগরি বেছে নিন
+        </h2>
+        <p className="mt-1 text-sm font-medium text-teal-100">
+          একটি ক্যাটাগরিতে ক্লিক করে সংশ্লিষ্ট বিশ্ববিদ্যালয়সমূহের ভর্তি তথ্য দেখুন।
+        </p>
+      </div>
+      <div className="grid grid-cols-1 gap-3 p-4 sm:grid-cols-2 sm:p-6">
         {categories.map((cat) => {
           const count = getUniversitiesByCategory(cat.id).length;
           const theme = getCategoryTheme(cat.id);

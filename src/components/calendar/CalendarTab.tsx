@@ -10,6 +10,7 @@ import { computeSummaryStats, getUrgentDeadlines, getUpcomingExams } from "@/lib
 import { useToday } from "@/lib/useToday";
 import { SummaryStatsBar } from "./SummaryStats";
 import { DeadlineTicker } from "./DeadlineTicker";
+import { NoticeTicker } from "./NoticeTicker";
 import { UpcomingTests } from "./UpcomingTests";
 import { TableToolbar } from "./TableToolbar";
 import { AdmissionTable } from "./AdmissionTable";
@@ -42,6 +43,8 @@ export function CalendarTab() {
       <SummaryStatsBar stats={stats} />
 
       <DeadlineTicker rows={urgentDeadlines} today={today} />
+
+      <NoticeTicker />
 
       <UpcomingTests rows={upcomingExams} today={today} />
 

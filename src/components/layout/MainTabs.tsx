@@ -4,10 +4,34 @@ import { LayoutGrid, BookOpenText, ClipboardCheck } from "lucide-react";
 
 export type MainTabId = "overview" | "info" | "eligibility";
 
-const TABS: { id: MainTabId; labelBn: string; icon: React.ElementType }[] = [
-  { id: "overview", labelBn: "একনজরে অ্যাডমিশন ক্যালেন্ডার", icon: LayoutGrid },
-  { id: "info", labelBn: "অ্যাডমিশন তথ্যকণিকা", icon: BookOpenText },
-  { id: "eligibility", labelBn: "আবেদনযোগ্যতা চেকার", icon: ClipboardCheck },
+const TABS: {
+  id: MainTabId;
+  labelBn: string;
+  icon: React.ElementType;
+  activeClass: string;
+  inactiveClass: string;
+}[] = [
+  {
+    id: "overview",
+    labelBn: "একনজরে অ্যাডমিশন ক্যালেন্ডার",
+    icon: LayoutGrid,
+    activeClass: "bg-gradient-to-r from-indigo-600 to-blue-600 text-white shadow-card",
+    inactiveClass: "text-indigo-600 hover:bg-indigo-50",
+  },
+  {
+    id: "info",
+    labelBn: "অ্যাডমিশন তথ্যকণিকা",
+    icon: BookOpenText,
+    activeClass: "bg-gradient-to-r from-teal-600 to-emerald-600 text-white shadow-card",
+    inactiveClass: "text-teal-600 hover:bg-teal-50",
+  },
+  {
+    id: "eligibility",
+    labelBn: "আবেদনযোগ্যতা চেকার",
+    icon: ClipboardCheck,
+    activeClass: "bg-purple-600 text-white shadow-card",
+    inactiveClass: "text-purple-600 hover:bg-purple-50",
+  },
 ];
 
 export function MainTabs({
@@ -36,9 +60,7 @@ export function MainTabs({
               aria-controls={`panel-${tab.id}`}
               onClick={() => onChange(tab.id)}
               className={`flex min-h-[56px] flex-col items-center justify-center gap-1 rounded-lg px-1 py-2 text-center text-[11px] font-semibold leading-tight transition-all sm:min-h-[64px] sm:flex-row sm:gap-2 sm:text-sm ${
-                isActive
-                  ? "bg-gradient-to-r from-indigo-600 to-violet-600 text-white shadow-card"
-                  : "text-slate-500 hover:bg-slate-100"
+                isActive ? tab.activeClass : tab.inactiveClass
               }`}
             >
               <Icon className="h-4 w-4 shrink-0 sm:h-5 sm:w-5" aria-hidden />

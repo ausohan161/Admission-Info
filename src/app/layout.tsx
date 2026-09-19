@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Hind_Siliguri } from "next/font/google";
 import "./globals.css";
+import { DateOverridesProvider } from "@/components/layout/DateOverridesProvider";
 
 const hindSiliguri = Hind_Siliguri({
   subsets: ["bengali", "latin"],
@@ -34,7 +35,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="bn" className={hindSiliguri.variable}>
-      <body className="min-h-screen antialiased">{children}</body>
+      <body className="min-h-screen antialiased">
+        <DateOverridesProvider>{children}</DateOverridesProvider>
+      </body>
     </html>
   );
 }

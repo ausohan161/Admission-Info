@@ -129,6 +129,44 @@ function main() {
 
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(universities, null, 2) + "\n", "utf8");
   console.log(`✓ Generated ${OUTPUT_FILE} from ${files.length} university file(s).`);
+
+  syncDatesFile(universities);
+}
+
+// public/dates.json is the file the site owner edits directly on the server
+// (cPanel / hPanel File Manager) to change dates without rebuilding. This only
+// ADDS missing units and refreshes the human-readable labels; any date value
+// already present is preserved so local edits are never overwritten.
+function syncDatesFile(universities) {
+  const datesFile = path.join(__dirname, "..", "public", "dates.json");
+  let existing = {};
+  if (fs.existsSync(datesFile)) {
+    try {
+      existing = JSON.parse(fs.readFileSync(datesFile, "utf8"));
+    } catch (err) {
+      console.warn(`! public/dates.json is not valid JSON, leaving it untouched: ${err.message}`);
+      return;
+    }
+  }
+
+  const out = {
+    _নির্দেশনা:
+      'প্রতিটি ইউনিটের তারিখ YYYY-MM-DD ফরম্যাটে লিখুন (যেমন 2026-03-15)। ফাঁকা "" বা null রাখলে সাইটের মূল তারিখই থাকবে। শুধু তারিখের মান বদলান — নাম/কী (key) বদলাবেন না।',
+  };
+  for (const uni of universities) {
+    for (const unit of uni.units) {
+      const key = `${uni.id}/${unit.id}`;
+      const prev = existing[key] || {};
+      out[key] = {
+        _নাম: unit.nameBn ? `${uni.nameBn} — ${unit.nameBn}` : uni.nameBn,
+        applicationStart: prev.applicationStart !== undefined ? prev.applicationStart : unit.applicationStart,
+        applicationEnd: prev.applicationEnd !== undefined ? prev.applicationEnd : unit.applicationEnd,
+        examDate: prev.examDate !== undefined ? prev.examDate : unit.examDate,
+      };
+    }
+  }
+  fs.writeFileSync(datesFile, JSON.stringify(out, null, 2) + "\n", "utf8");
+  console.log(`✓ Synced ${datesFile}`);
 }
 
 main();

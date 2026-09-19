@@ -14,6 +14,19 @@ public_folder: "/uploads"
 locale: "en"
 
 collections:
+  - name: "notices"
+    label: "জরুরি নোটিশ (স্ক্রলিং)"
+    label_singular: "নোটিশ তালিকা"
+    files:
+      - name: "notices"
+        label: "জরুরি নোটিশ তালিকা"
+        file: "src/data/notices.json"
+        fields:
+          - label: "নোটিশসমূহ"
+            name: "notices"
+            widget: "list"
+            field: { label: "নোটিশ", name: "notice", widget: "string" }
+
   - name: "universities"
     label: "বিশ্ববিদ্যালয় / প্রতিষ্ঠান"
     label_singular: "প্রতিষ্ঠান"
