@@ -23,7 +23,7 @@ interface Props {
 }
 
 const selectClass =
-  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2 text-xs text-slate-700 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 sm:text-sm";
+  "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-base text-slate-700 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 sm:py-2 sm:text-sm";
 
 export function TableToolbar({
   query,
@@ -41,9 +41,9 @@ export function TableToolbar({
           type="search"
           value={query}
           onChange={(e) => onQueryChange(e.target.value)}
-          placeholder="বিশ্ববিদ্যালয়ের নাম বা সংক্ষিপ্ত রূপ দিয়ে খুঁজুন — যেমন BUET, ঢাকা বিশ্ববিদ্যালয়, GST"
+          placeholder="বিশ্ববিদ্যালয় খুঁজুন — যেমন BUET, DU, GST"
           aria-label="বিশ্ববিদ্যালয় অনুসন্ধান"
-          className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-sm text-slate-700 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
+          className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-9 pr-3 text-base text-slate-700 sm:text-sm focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100"
         />
       </div>
 
